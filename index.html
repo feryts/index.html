@@ -178,9 +178,9 @@
 <!-- RESULTS -->
 <div id="results">
   <div class="legend">
-    <div class="legend-item"><div class="legend-dot" style="background:#1a7a3c"></div> %85+ Mükemmel</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#27ae60"></div> %70–85 İyi</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#e67e22"></div> %60–70 Orta</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#1a7a3c"></div> %90+ Mükemmel</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#27ae60"></div> %75–90 İyi</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#e67e22"></div> %60–75 Orta</div>
     <div class="legend-item"><div class="legend-dot" style="background:#c0392b"></div> %60 Altı Düşük</div>
   </div>
 
@@ -202,8 +202,10 @@
             <th>MOY</th>
             <th>OTP'li %</th>
             <th>Telefon %</th>
+            <th style="background:rgba(255,255,255,0.15);">OTP+Tel %</th>
             <th>Temassız %</th>
-            <th>Toplam Parça</th>
+            <th style="background:rgba(255,255,255,0.2);">Toplam Başarılı %</th>
+            <th>Parça</th>
           </tr>
         </thead>
         <tbody id="adanaTbody"></tbody>
@@ -229,8 +231,10 @@
             <th>MOY</th>
             <th>OTP'li %</th>
             <th>Telefon %</th>
+            <th style="background:rgba(255,255,255,0.15);">OTP+Tel %</th>
             <th>Temassız %</th>
-            <th>Toplam Parça</th>
+            <th style="background:rgba(255,255,255,0.2);">Toplam Başarılı %</th>
+            <th>Parça</th>
           </tr>
         </thead>
         <tbody id="asgTbody"></tbody>
@@ -309,14 +313,14 @@
           let tel = parseFloat(r[telKey]) || 0;
           let tem = parseFloat(r[temKey]) || 0;
           const toplam = parseInt(r[topKey]) || 0;
-          // Excel yüzdesi 0-1 arasında değilse (örn: 81 olarak kaydedilmişse) 100'e böl
           if (otp > 1) otp = otp / 100;
           if (tel > 1) tel = tel / 100;
           if (tem > 1) tem = tem / 100;
-          const temassiz = otp + tel;
+          const otpTel = otp + tel;          // OTP + Telefon toplamı
+          const toplamBasarili = otp + tel + tem; // Genel toplam başarılı
           return {
             moy: r[moyKey] || '',
-            otp, tel, tem, temassiz, toplam
+            otp, tel, tem, otpTel, toplamBasarili, toplam
           };
         }
 
@@ -331,8 +335,8 @@
         const adanaASG    = adanaRaw.filter(r => r[moyKey]?.toString().toUpperCase().includes('ASG'));
 
         // Yüksekten alçağa sırala (temassız = OTP + Telefon)
-        adanaData = adanaNonASG.map(parseRow).sort((a,b) => b.temassiz - a.temassiz);
-        asgData   = adanaASG.map(parseRow).sort((a,b) => b.temassiz - a.temassiz);
+        adanaData = adanaNonASG.map(parseRow).sort((a,b) => b.toplamBasarili - a.toplamBasarili);
+        asgData   = adanaASG.map(parseRow).sort((a,b) => b.toplamBasarili - a.toplamBasarili);
 
         renderTables();
 
@@ -345,8 +349,8 @@
 
   function rowColor(pct) {
     const p = pct > 1 ? pct / 100 : pct;
-    if (p >= 0.85) return '#1a7a3c';
-    if (p >= 0.70) return '#27ae60';
+    if (p >= 0.90) return '#1a7a3c';
+    if (p >= 0.75) return '#27ae60';
     if (p >= 0.60) return '#e67e22';
     return '#c0392b';
   }
@@ -358,14 +362,16 @@
     const tbody = document.getElementById(tbodyId);
     tbody.innerHTML = '';
     data.forEach((r, i) => {
-      const color = rowColor(r.temassiz);
+      const color = rowColor(r.toplamBasarili);
       const tr = document.createElement('tr');
       tr.style.background = color;
       tr.innerHTML = `
         <td><span class="rank-badge">${i+1}</span>${r.moy}</td>
         <td>${fmt(r.otp)}</td>
         <td>${fmt(r.tel)}</td>
-        <td>${fmt(r.temassiz)}</td>
+        <td style="background:rgba(0,0,0,0.15);font-weight:700;">${fmt(r.otpTel)}</td>
+        <td>${fmt(r.tem)}</td>
+        <td style="background:rgba(0,0,0,0.2);font-weight:800;">${fmt(r.toplamBasarili)}</td>
         <td>${fmtN(r.toplam)}</td>
       `;
       tbody.appendChild(tr);
@@ -412,11 +418,14 @@
       const medal = emojis[i] || `${i+1}.`;
       const dot = colorEmoji(r.temassiz);
       msg += `${medal} *${r.moy}*\n`;
-      const tm = r.temassiz > 1 ? r.temassiz : r.temassiz*100;
       const op = r.otp > 1 ? r.otp : r.otp*100;
       const tl = r.tel > 1 ? r.tel : r.tel*100;
-      msg += `${dot} Temassız: %${tm.toFixed(1)}\n`;
-      msg += `📦 OTP: %${op.toFixed(1)} | 📞 Tel: %${tl.toFixed(1)}\n`;
+      const ot = r.otpTel > 1 ? r.otpTel : r.otpTel*100;
+      const te = r.tem > 1 ? r.tem : r.tem*100;
+      const tb = r.toplamBasarili > 1 ? r.toplamBasarili : r.toplamBasarili*100;
+      msg += `${dot} Toplam Başarılı: %${tb.toFixed(1)}\n`;
+      msg += `📦 OTP: %${op.toFixed(1)} | 📞 Tel: %${tl.toFixed(1)} | OTP+Tel: %${ot.toFixed(1)}\n`;
+      msg += `🤝 Temassız: %${te.toFixed(1)}\n`;
       msg += `📮 Toplam: ${fmtN(r.toplam)} parça\n\n`;
     });
 
