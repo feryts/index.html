@@ -474,4 +474,42 @@ function captureSection(type, btnEl) {
       img.src = url;
       document.getElementById('saveModal').classList.add('show');
       btnEl.textContent = origText;
-      btnEl.dis
+      btnEl.disabled = false;
+    }, 'image/png');
+  }).catch(function(err) {
+    alert('Gorsel alinamadi: ' + err.message);
+    btnEl.textContent = origText;
+    btnEl.disabled = false;
+  });
+}
+
+function downloadImage() {
+  if (!currentBlob) return;
+  var url = URL.createObjectURL(currentBlob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'moy-raporu-' + new Date().toLocaleDateString('tr-TR').replace(/\./g,'-') + '.png';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+
+  // Mobilse ayrıca share API dene
+  if (navigator.share && navigator.canShare) {
+    var file = new File([currentBlob], 'moy-raporu.png', { type: 'image/png' });
+    if (navigator.canShare({ files: [file] })) {
+      navigator.share({ files: [file], title: 'MOY Raporu' });
+    }
+  }
+}
+
+function closeModal() {
+  document.getElementById('saveModal').classList.remove('show');
+  currentBlob = null;
+  var img = document.getElementById('modalImg');
+  URL.revokeObjectURL(img.src);
+  img.src = '';
+}
+</script>
+</body>
+</html>
