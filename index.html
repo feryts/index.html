@@ -108,10 +108,11 @@ td small { font-size:10px; opacity:0.85; display:block; }
   <button class="new-btn" onclick="resetApp()">← Yeni Excel Yukle</button>
 
   <div class="legend">
-    <div class="legend-item"><div class="legend-dot" style="background:#1a7a3c"></div>%90+ Mukemmel</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#27ae60"></div>%75-90 Iyi</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#e67e22"></div>%60-75 Orta</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#c0392b"></div>%60 Alti Dusuk</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#145a32"></div>%90+ Mukemmel</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#1e8449"></div>%80-90 Iyi</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#27ae60"></div>%70-80 Orta Iyi</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#d68910"></div>%50-70 Orta</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#c0392b"></div>%50 Alti Dusuk</div>
   </div>
 
   <div class="section" id="adanaSection">
@@ -182,46 +183,49 @@ td small { font-size:10px; opacity:0.85; display:block; }
 <script>
 // ── SABİT İSİM LİSTELERİ ──
 var ADANA_LISTESI = [
-  'nihat yigit plasiyer',
   'halil ibrahim demirbaş plasiyer',
   'erdinc ergen plasiyer',
-  'gokhan dalgic plasiyer',
-  'ibrahim turan plasiyer',
-  'serkan ibis',
-  'ercan gedik plasiyer',
-  'murat kat plasiyer',
-  'ahmet kizilay plasiyer',
-  'sinan sizucer',
-  'yekta bayram plasiyer',
-  'umut can koksal',
-  'ahmet akkilic sendeo',
-  'ahmet cosgun plasiyer',
-  'kaan aksoy plasiyer',
-  'omer ayzit plasiyer',
-  'orhan kagni',
-  'faruk tayyan plasiyer',
-  'can berk sahin plasiyer',
-  'lokman adigüzel plasiyer',
-  'emir ekiz plasiyer',
   'mucahit konyar plasiyer',
-  'ferit can solmaz plasiyer',
-  'furkan altan',
-  'ozgur kose plasiyer',
-  'emrah akyel sendeo',
-  'burhan durmus sendeo asg',
-  'burak ozturk sendeo',
-  'mehmet gokce plasiyer',
-  'murat can oksuz plasiyer',
-  'serdar karaoglan plasiyer',
-  'erhan karatas sendeo',
-  'hamza bahadir ozel plasiyer',
-  'ahmet seckin',
   'burak ovec plasiyer',
+  'gokhan dalgic plasiyer',
+  'ahmet kizilay plasiyer',
+  'murat can oksuz plasiyer',
+  'kaan aksoy plasiyer',
+  'alper karakas adana',
   'hulusi copuroglu plasiyer',
-  'mahmut ozay plasiyer',
-  'duhan yavas plasiyer',
+  'hamza bahadir ozel plasiyer',
+  'omer ayzit plasiyer',
+  'ibrahim turan plasiyer',
+  'faruk tayyan plasiyer',
+  'murat kat plasiyer',
+  'lokman adigüzel plasiyer',
+  'ferit can solmaz plasiyer',
+  'ahmet akkilic sendeo',
+  'serdar karaoglan plasiyer',
   'berkay sarieroğlularindan sendeo',
-  'alper karakas adana'
+  'ahmet seckin',
+  'mehmet gokce plasiyer',
+  'ahmet cosgun plasiyer',
+  'mahmut ozay plasiyer',
+  'ercan gedik plasiyer',
+  'emir ekiz plasiyer',
+  'ozgur kose plasiyer',
+  'can berk sahin plasiyer',
+  'ufuk turkmen',
+  'erhan karatas sendeo',
+  'nihat yigit plasiyer',
+  'yekta bayram plasiyer',
+  'emrah akyel sendeo',
+  'burak ozturk sendeo',
+  'orhan kagni',
+  'duhan yavas plasiyer',
+  'sinan sizucer',
+  'neslihan erin',
+  'furkan altan',
+  'umut can koksal',
+  'serkan ibis',
+  'derya sedefoglu',
+  'yusuf yildiz kalite'
 ];
 
 var ASG_LISTESI = [
@@ -235,6 +239,7 @@ var ASG_LISTESI = [
   'burhan durmus sendeo asg',
   'hava yolacan asg',
   'enes furkan gul sendeo asg',
+  'furkan gul sendeo',
   'mert gul asg',
   'ozay aydinli sendeo asg',
   'hilmi dogan asg',
@@ -242,7 +247,8 @@ var ASG_LISTESI = [
   'cemal caka asg',
   'omer faruk aygoren asg',
   'lutfi can atik asg',
-  'omer oksuz asg'
+  'omer oksuz asg',
+  'riza firat asg'
 ];
 
 function normalize(str) {
@@ -257,7 +263,10 @@ function normalize(str) {
 function isInList(name, list) {
   var n = normalize(name);
   for (var i = 0; i < list.length; i++) {
-    if (n === list[i] || n.indexOf(list[i]) !== -1 || list[i].indexOf(n) !== -1) return true;
+    var l = list[i];
+    if (n === l) return true;
+    // normalize sonrasi tam eslesme
+    if (n.replace(/\s+/g,' ').trim() === l.replace(/\s+/g,' ').trim()) return true;
   }
   return false;
 }
@@ -374,8 +383,8 @@ function processFile(file) {
         }
       }
 
-      adanaData = adanaRows.sort(function(a,b) { return b.toplamPct - a.toplamPct; });
-      asgData   = asgRows.sort(function(a,b) { return b.toplamPct - a.toplamPct; });
+      adanaData = adanaRows.filter(function(r){ return r.toplam > 0; }).sort(function(a,b) { return b.toplamPct - a.toplamPct; });
+      asgData   = asgRows.filter(function(r){ return r.toplam > 0; }).sort(function(a,b) { return b.toplamPct - a.toplamPct; });
 
       renderTables();
     } catch(err) {
@@ -386,10 +395,11 @@ function processFile(file) {
 }
 
 function rowColor(p) {
-  if (p >= 0.90) return '#1a7a3c';
-  if (p >= 0.75) return '#27ae60';
-  if (p >= 0.60) return '#e67e22';
-  return '#c0392b';
+  if (p >= 0.90) return '#145a32';   // koyu yesil - mukemmel
+  if (p >= 0.80) return '#1e8449';   // orta yesil - iyi
+  if (p >= 0.70) return '#27ae60';   // acik yesil - orta iyi
+  if (p >= 0.50) return '#d68910';   // turuncu - orta
+  return '#c0392b';                   // kirmizi - dusuk
 }
 
 function fmt(val) { return (val * 100).toFixed(2) + '%'; }
