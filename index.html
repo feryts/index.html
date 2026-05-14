@@ -200,12 +200,12 @@
         <thead>
           <tr>
             <th>MOY</th>
-            <th>OTP'li %</th>
-            <th>Telefon %</th>
-            <th style="background:rgba(255,255,255,0.15);">OTP+Tel %</th>
-            <th>Temassız %</th>
-            <th style="background:rgba(255,255,255,0.2);">Toplam Başarılı %</th>
-            <th>Parça</th>
+            <th>OTP'li</th>
+            <th>Telefon</th>
+            <th style="background:rgba(255,255,255,0.15);">OTP+Tel</th>
+            <th>Temassız</th>
+            <th style="background:rgba(255,255,255,0.2);">Toplam Başarılı</th>
+            <th>Toplam Parça</th>
           </tr>
         </thead>
         <tbody id="adanaTbody"></tbody>
@@ -229,12 +229,12 @@
         <thead>
           <tr>
             <th>MOY</th>
-            <th>OTP'li %</th>
-            <th>Telefon %</th>
-            <th style="background:rgba(255,255,255,0.15);">OTP+Tel %</th>
-            <th>Temassız %</th>
-            <th style="background:rgba(255,255,255,0.2);">Toplam Başarılı %</th>
-            <th>Parça</th>
+            <th>OTP'li</th>
+            <th>Telefon</th>
+            <th style="background:rgba(255,255,255,0.15);">OTP+Tel</th>
+            <th>Temassız</th>
+            <th style="background:rgba(255,255,255,0.2);">Toplam Başarılı</th>
+            <th>Toplam Parça</th>
           </tr>
         </thead>
         <tbody id="asgTbody"></tbody>
@@ -300,27 +300,39 @@
         const keys = Object.keys(sample);
         const findKey = (...terms) => keys.find(k => terms.some(t => k.toLowerCase().includes(t.toLowerCase()))) || '';
 
-        const ilKey     = findKey('İl', 'il');
-        const moyKey    = findKey('MOY', 'moy');
-        const otpKey    = findKey("OTP'li", 'otp');
-        const telKey    = findKey('Telefon Numarası ile Teslimat', 'telefon numarası ile teslimat');
-        const temKey    = findKey('Temassız Teslimat', 'temassız teslimat');
-        const topKey    = findKey('Toplam Teslim', 'toplam');
+        const ilKey      = findKey('İl', 'il');
+        const moyKey     = findKey('MOY', 'moy');
+        const otpSayiKey = findKey('OTP ile Teslim Edilen', 'otp ile teslim');
+        const otpKey     = findKey("OTP'li Teslimat Yüzdesi", "otp'li teslimat");
+        const telSayiKey = findKey('Telefon Numarası ile Teslim Edilen', 'telefon numarası ile teslim edilen');
+        const telKey     = findKey('Telefon Numarası ile Teslimat Yüzdesi', 'telefon numarası ile teslimat yüzdesi');
+        const temSayiKey = findKey('Temassız Teslim Edilen', 'temassız teslim edilen');
+        const temKey     = findKey('Temassız Teslimat Yüzdesi', 'temassız teslimat yüzdesi');
+        const topKey     = findKey('Toplam Teslim', 'toplam');
 
         // Parse satır
         function parseRow(r) {
-          let otp = parseFloat(r[otpKey]) || 0;
-          let tel = parseFloat(r[telKey]) || 0;
-          let tem = parseFloat(r[temKey]) || 0;
-          const toplam = parseInt(r[topKey]) || 0;
-          if (otp > 1) otp = otp / 100;
-          if (tel > 1) tel = tel / 100;
-          if (tem > 1) tem = tem / 100;
-          const otpTel = otp + tel;          // OTP + Telefon toplamı
-          const toplamBasarili = otp + tel + tem; // Genel toplam başarılı
+          const otpSayi  = parseInt(r[otpSayiKey])  || 0;  // OTP'li parça sayısı
+          const telSayi  = parseInt(r[telSayiKey])  || 0;  // Telefonlu parça sayısı
+          const temSayi  = parseInt(r[temSayiKey])  || 0;  // Fiziksel temassız parça sayısı
+          const toplam   = parseInt(r[topKey])       || 0;  // Toplam parça
+
+          // Yüzdeler: parça sayısı / toplam
+          const otpPct   = toplam > 0 ? otpSayi / toplam : 0;
+          const telPct   = toplam > 0 ? telSayi / toplam : 0;
+          const temPct   = toplam > 0 ? temSayi / toplam : 0;
+          const otpTelSayi     = otpSayi + telSayi;
+          const otpTelPct      = toplam > 0 ? otpTelSayi / toplam : 0;
+          const toplamBasarili = otpSayi + telSayi + temSayi;
+          const toplamPct      = toplam > 0 ? toplamBasarili / toplam : 0;
+
           return {
             moy: r[moyKey] || '',
-            otp, tel, tem, otpTel, toplamBasarili, toplam
+            otpSayi, telSayi, temSayi,
+            otpPct, telPct, temPct,
+            otpTelSayi, otpTelPct,
+            toplamBasarili, toplamPct,
+            toplam
           };
         }
 
@@ -335,8 +347,8 @@
         const adanaASG    = adanaRaw.filter(r => r[moyKey]?.toString().toUpperCase().includes('ASG'));
 
         // Yüksekten alçağa sırala (temassız = OTP + Telefon)
-        adanaData = adanaNonASG.map(parseRow).sort((a,b) => b.toplamBasarili - a.toplamBasarili);
-        asgData   = adanaASG.map(parseRow).sort((a,b) => b.toplamBasarili - a.toplamBasarili);
+        adanaData = adanaNonASG.map(parseRow).sort((a,b) => b.toplamPct - a.toplamPct);
+        asgData   = adanaASG.map(parseRow).sort((a,b) => b.toplamPct - a.toplamPct);
 
         renderTables();
 
@@ -347,31 +359,30 @@
     reader.readAsArrayBuffer(file);
   }
 
-  function rowColor(pct) {
-    const p = pct > 1 ? pct / 100 : pct;
+  function rowColor(p) {
     if (p >= 0.90) return '#1a7a3c';
     if (p >= 0.75) return '#27ae60';
     if (p >= 0.60) return '#e67e22';
     return '#c0392b';
   }
 
-  function fmt(val) { const v = val > 1 ? val : val * 100; return v.toFixed(2) + '%'; }
+  function fmt(val) { return (val * 100).toFixed(2) + '%'; }
   function fmtN(val) { return val.toLocaleString('tr-TR'); }
 
   function renderTbody(tbodyId, data) {
     const tbody = document.getElementById(tbodyId);
     tbody.innerHTML = '';
     data.forEach((r, i) => {
-      const color = rowColor(r.toplamBasarili);
+      const color = rowColor(r.toplamPct);
       const tr = document.createElement('tr');
       tr.style.background = color;
       tr.innerHTML = `
         <td><span class="rank-badge">${i+1}</span>${r.moy}</td>
-        <td>${fmt(r.otp)}</td>
-        <td>${fmt(r.tel)}</td>
-        <td style="background:rgba(0,0,0,0.15);font-weight:700;">${fmt(r.otpTel)}</td>
-        <td>${fmt(r.tem)}</td>
-        <td style="background:rgba(0,0,0,0.2);font-weight:800;">${fmt(r.toplamBasarili)}</td>
+        <td>${r.otpSayi} <small>(${fmt(r.otpPct)})</small></td>
+        <td>${r.telSayi} <small>(${fmt(r.telPct)})</small></td>
+        <td style="background:rgba(0,0,0,0.12);font-weight:700;">${r.otpTelSayi} <small>(${fmt(r.otpTelPct)})</small></td>
+        <td>${r.temSayi} <small>(${fmt(r.temPct)})</small></td>
+        <td style="background:rgba(0,0,0,0.2);font-weight:800;">${r.toplamBasarili} <small>(${fmt(r.toplamPct)})</small></td>
         <td>${fmtN(r.toplam)}</td>
       `;
       tbody.appendChild(tr);
@@ -418,14 +429,9 @@
       const medal = emojis[i] || `${i+1}.`;
       const dot = colorEmoji(r.temassiz);
       msg += `${medal} *${r.moy}*\n`;
-      const op = r.otp > 1 ? r.otp : r.otp*100;
-      const tl = r.tel > 1 ? r.tel : r.tel*100;
-      const ot = r.otpTel > 1 ? r.otpTel : r.otpTel*100;
-      const te = r.tem > 1 ? r.tem : r.tem*100;
-      const tb = r.toplamBasarili > 1 ? r.toplamBasarili : r.toplamBasarili*100;
-      msg += `${dot} Toplam Başarılı: %${tb.toFixed(1)}\n`;
-      msg += `📦 OTP: %${op.toFixed(1)} | 📞 Tel: %${tl.toFixed(1)} | OTP+Tel: %${ot.toFixed(1)}\n`;
-      msg += `🤝 Temassız: %${te.toFixed(1)}\n`;
+      msg += `${dot} Toplam Başarılı: ${r.toplamBasarili}/${r.toplam} (%${(r.toplamPct*100).toFixed(1)})\n`;
+      msg += `📦 OTP: ${r.otpSayi} (%${(r.otpPct*100).toFixed(1)}) | 📞 Tel: ${r.telSayi} (%${(r.telPct*100).toFixed(1)})\n`;
+      msg += `🤝 OTP+Tel: ${r.otpTelSayi} | Temassız: ${r.temSayi} (%${(r.temPct*100).toFixed(1)})\n`;
       msg += `📮 Toplam: ${fmtN(r.toplam)} parça\n\n`;
     });
 
