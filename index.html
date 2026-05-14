@@ -7,211 +7,123 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-  * { margin:0; padding:0; box-sizing:border-box; }
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Inter',sans-serif; background:#f0f4f0; min-height:100vh; padding:16px 12px 40px; }
 
-  body {
-    font-family: 'Inter', sans-serif;
-    background: #f0f4f0;
-    min-height: 100vh;
-    padding: 20px 16px 40px;
-  }
+.header { display:flex; align-items:center; gap:12px; background:#00A651; border-radius:16px; padding:14px 18px; margin-bottom:16px; box-shadow:0 4px 16px rgba(0,166,81,0.3); }
+.header-logo { width:42px; height:42px; background:white; border-radius:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.header-logo svg { width:26px; height:26px; }
+.header-text h1 { font-size:16px; font-weight:800; color:white; }
+.header-text p  { font-size:11px; color:rgba(255,255,255,0.8); margin-top:2px; }
 
-  /* HEADER */
-  .header {
-    display: flex; align-items: center; gap: 14px;
-    background: #00A651; border-radius: 16px;
-    padding: 16px 20px; margin-bottom: 20px;
-    box-shadow: 0 4px 16px rgba(0,166,81,0.3);
-  }
-  .header-logo {
-    width: 44px; height: 44px; background: white;
-    border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-  }
-  .header-logo svg { width: 28px; height: 28px; }
-  .header-text h1 { font-size: 17px; font-weight: 800; color: white; }
-  .header-text p  { font-size: 11px; color: rgba(255,255,255,0.8); margin-top: 2px; }
+.upload-card { background:white; border-radius:16px; border:2px dashed #b2dfb2; padding:32px 16px; text-align:center; margin-bottom:16px; position:relative; box-shadow:0 2px 12px rgba(0,0,0,0.06); transition:all 0.2s; }
+.upload-card:hover { border-color:#00A651; background:#f0faf5; }
+.upload-card input[type=file] { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%; }
+.upload-icon { font-size:40px; margin-bottom:10px; }
+.upload-title { font-size:15px; font-weight:700; color:#1a1a1a; margin-bottom:6px; }
+.upload-sub { font-size:12px; color:#888; }
+.upload-sub strong { color:#00A651; }
 
-  /* UPLOAD */
-  .upload-card {
-    background: white; border-radius: 16px;
-    border: 2px dashed #c8e6c9; padding: 32px 20px;
-    text-align: center; margin-bottom: 20px;
-    cursor: pointer; transition: all 0.2s; position: relative;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-  }
-  .upload-card:hover { border-color: #00A651; background: #f0faf5; }
-  .upload-card.drag-over { border-color: #00A651; background: #e6f7ee; }
-  .upload-card input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
-  .upload-icon { font-size: 40px; margin-bottom: 10px; }
-  .upload-title { font-size: 15px; font-weight: 700; color: #1a1a1a; margin-bottom: 6px; }
-  .upload-sub { font-size: 12px; color: #888; }
-  .upload-sub strong { color: #00A651; }
+.loading { display:none; text-align:center; padding:32px; background:white; border-radius:16px; margin-bottom:16px; }
+.spinner { width:36px; height:36px; border:3px solid #e0e0e0; border-top-color:#00A651; border-radius:50%; animation:spin 0.8s linear infinite; margin:0 auto 12px; }
+@keyframes spin { to { transform:rotate(360deg); } }
 
-  /* LOADING */
-  .loading {
-    display: none; text-align: center; padding: 32px;
-    background: white; border-radius: 16px; margin-bottom: 20px;
-  }
-  .spinner {
-    width: 36px; height: 36px; border: 3px solid #e0e0e0;
-    border-top-color: #00A651; border-radius: 50%;
-    animation: spin 0.8s linear infinite; margin: 0 auto 12px;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
+.legend { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
+.legend-item { display:flex; align-items:center; gap:5px; font-size:11px; font-weight:600; color:#444; background:white; padding:5px 10px; border-radius:8px; box-shadow:0 1px 4px rgba(0,0,0,0.06); }
+.legend-dot { width:12px; height:12px; border-radius:3px; }
 
-  /* LEGEND */
-  .legend {
-    display: flex; gap: 8px; flex-wrap: wrap;
-    margin-bottom: 16px;
-  }
-  .legend-item {
-    display: flex; align-items: center; gap: 5px;
-    font-size: 11px; font-weight: 600; color: #444;
-    background: white; padding: 5px 10px; border-radius: 8px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-  }
-  .legend-dot { width: 12px; height: 12px; border-radius: 3px; }
+.new-btn { margin-bottom:14px; background:white; border:1.5px solid #ddd; border-radius:10px; padding:8px 16px; font-family:inherit; font-size:12px; font-weight:600; color:#555; cursor:pointer; }
+.new-btn:hover { border-color:#00A651; color:#00A651; }
 
-  /* SECTION */
-  .section { margin-bottom: 28px; }
-  .section-header {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 10px; flex-wrap: wrap; gap: 8px;
-  }
-  .section-title {
-    font-size: 14px; font-weight: 800; color: #1a1a1a;
-    padding: 8px 16px; background: white; border-radius: 10px;
-    display: inline-flex; align-items: center; gap: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    border-left: 4px solid #00A651;
-  }
-  .section-count {
-    font-size: 11px; font-weight: 600; color: white;
-    background: #00A651; padding: 3px 10px; border-radius: 20px;
-  }
+.section { margin-bottom:24px; }
+.section-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; flex-wrap:wrap; gap:8px; }
+.section-title { font-size:14px; font-weight:800; color:#1a1a1a; padding:8px 14px; background:white; border-radius:10px; display:inline-flex; align-items:center; gap:6px; box-shadow:0 2px 8px rgba(0,0,0,0.06); border-left:4px solid #00A651; }
+.section-count { font-size:11px; font-weight:700; color:white; background:#00A651; padding:2px 8px; border-radius:20px; }
 
-  /* WHATSAPP BUTTON */
-  .wa-btn {
-    display: inline-flex; align-items: center; gap: 7px;
-    background: #25D366; color: white;
-    border: none; border-radius: 10px; padding: 8px 16px;
-    font-family: inherit; font-size: 12px; font-weight: 700;
-    cursor: pointer; transition: all 0.2s;
-    box-shadow: 0 2px 8px rgba(37,211,102,0.35);
-  }
-  .wa-btn:hover { background: #1db954; transform: translateY(-1px); }
-  .wa-btn svg { width: 16px; height: 16px; }
+.btn-group { display:flex; gap:8px; flex-wrap:wrap; }
+.wa-btn { display:inline-flex; align-items:center; gap:6px; background:#25D366; color:white; border:none; border-radius:10px; padding:8px 14px; font-family:inherit; font-size:12px; font-weight:700; cursor:pointer; box-shadow:0 2px 8px rgba(37,211,102,0.3); transition:all 0.2s; }
+.wa-btn:hover { background:#1db954; }
+.wa-btn.dark { background:#128C7E; box-shadow:0 2px 8px rgba(18,140,126,0.3); }
+.wa-btn:hover.dark { background:#0e6b60; }
 
-  /* TABLE */
-  .table-wrap {
-    background: white; border-radius: 14px;
-    overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-    overflow-x: auto;
-  }
-  table { width: 100%; border-collapse: collapse; min-width: 480px; }
-  thead tr { background: #003d20; }
-  th {
-    padding: 11px 14px; font-size: 11px; font-weight: 700;
-    color: white; text-align: center; white-space: nowrap;
-  }
-  th:first-child { text-align: left; min-width: 160px; }
-  td {
-    padding: 9px 14px; font-size: 12px; font-weight: 500;
-    text-align: center; color: white;
-    border-bottom: 1px solid rgba(0,0,0,0.06);
-  }
-  td:first-child { text-align: left; font-weight: 700; font-size: 12px; }
-  tr:last-child td { border-bottom: none; }
+.table-wrap { background:white; border-radius:14px; overflow:hidden; box-shadow:0 2px 12px rgba(0,0,0,0.08); overflow-x:auto; }
+table { width:100%; border-collapse:collapse; min-width:500px; }
+thead tr { background:#003d20; }
+th { padding:10px 12px; font-size:11px; font-weight:700; color:white; text-align:center; white-space:nowrap; }
+th:first-child { text-align:left; min-width:150px; }
+td { padding:9px 12px; font-size:12px; font-weight:500; text-align:center; color:white; border-bottom:1px solid rgba(0,0,0,0.08); }
+td:first-child { text-align:left; font-weight:700; }
+tr:last-child td { border-bottom:none; }
+td small { font-size:10px; opacity:0.85; }
 
-  .rank-badge {
-    display: inline-block; width: 20px; height: 20px;
-    background: rgba(255,255,255,0.25); border-radius: 5px;
-    font-size: 10px; font-weight: 800; line-height: 20px;
-    text-align: center; margin-right: 6px; flex-shrink: 0;
-  }
+.rank-badge { display:inline-block; width:20px; height:20px; background:rgba(255,255,255,0.25); border-radius:5px; font-size:10px; font-weight:800; line-height:20px; text-align:center; margin-right:5px; }
 
-  /* EMPTY */
-  #emptyState {
-    text-align: center; padding: 40px 20px;
-  }
-  #emptyState .empty-icon { font-size: 48px; margin-bottom: 12px; }
-  #emptyState p { font-size: 14px; color: #888; font-weight: 500; }
-
-  /* RESULTS */
-  #results { display: none; }
-
-  @media (max-width: 480px) {
-    th, td { padding: 8px 8px; font-size: 11px; }
-    th:first-child { min-width: 120px; }
-  }
+#results { display:none; }
+#emptyState { display:none; text-align:center; padding:32px; }
+#emptyState p { font-size:14px; color:#888; }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
 <div class="header">
   <div class="header-logo">
-    <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 120 120" fill="none">
       <path d="M60 10C38.46 10 21 27.46 21 49c0 30.19 39 61 39 61s39-30.81 39-61C99 27.46 81.54 10 60 10zm0 53c-8.84 0-16-7.16-16-16s7.16-16 16-16 16 7.16 16 16-7.16 16-16 16z" fill="#00A651"/>
     </svg>
   </div>
   <div class="header-text">
     <h1>MOY Performans Raporu</h1>
-    <p id="headerDate">Excel yükleyerek raporu oluşturun</p>
+    <p id="headerDate">Excel yukleyerek raporu olusturun</p>
   </div>
 </div>
 
-<!-- UPLOAD -->
 <div class="upload-card" id="uploadCard">
   <input type="file" id="fileInput" accept=".xlsx,.xls" onchange="handleFile(event)" />
   <div class="upload-icon">📊</div>
-  <div class="upload-title">Excel Dosyasını Yükleyin</div>
-  <div class="upload-sub">Ham OTP raporunu buraya sürükleyin veya seçin<br><strong>.xlsx veya .xls formatı</strong></div>
+  <div class="upload-title">Excel Dosyasini Yukleyin</div>
+  <div class="upload-sub">Ham OTP raporunu buraya surukleyin veya secin<br><strong>.xlsx veya .xls formati</strong></div>
 </div>
 
-<!-- LOADING -->
 <div class="loading" id="loadingEl">
   <div class="spinner"></div>
-  <p style="font-size:13px;color:#888;font-weight:500;">Rapor oluşturuluyor...</p>
+  <p style="font-size:13px;color:#888;font-weight:500;">Rapor olusturuluyor...</p>
 </div>
 
-<!-- RESULTS -->
+<div id="emptyState">
+  <p id="emptyMsg">Veri bulunamadi.</p>
+</div>
+
 <div id="results">
+  <button class="new-btn" onclick="resetApp()">← Yeni Excel Yukle</button>
+
   <div class="legend">
-    <div class="legend-item"><div class="legend-dot" style="background:#1a7a3c"></div> %90+ Mükemmel</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#27ae60"></div> %75–90 İyi</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#e67e22"></div> %60–75 Orta</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#c0392b"></div> %60 Altı Düşük</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#1a7a3c"></div>%90+ Mukemmel</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#27ae60"></div>%75-90 Iyi</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#e67e22"></div>%60-75 Orta</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#c0392b"></div>%60 Alti Dusuk</div>
   </div>
 
-  <!-- ADANA TABLOSU -->
+  <!-- ADANA -->
   <div class="section" id="adanaSection">
     <div class="section-header">
-      <div style="display:flex;align-items:center;gap:8px;">
-        <div class="section-title">🏙️ ADANA <span class="section-count" id="adanaCount">0</span></div>
-      </div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;">
-        <button class="wa-btn" onclick="shareWhatsApp('adana')">
-          <svg viewBox="0 0 24 24" fill="white" width="16" height="16"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-          Metin
-        </button>
-        <button class="wa-btn" onclick="shareScreenshot('adana')" style="background:#128C7E;">
-          📸 Görsel Paylaş
-        </button>
+      <div class="section-title">🏙️ ADANA <span class="section-count" id="adanaCount">0</span></div>
+      <div class="btn-group">
+        <button class="wa-btn" onclick="shareWhatsApp('adana')">📋 Metin</button>
+        <button class="wa-btn dark" onclick="shareScreenshot('adana', this)">📸 Gorsel</button>
       </div>
     </div>
     <div class="table-wrap">
-      <table id="adanaTable">
+      <table>
         <thead>
           <tr>
             <th>MOY</th>
             <th>OTP'li</th>
             <th>Telefon</th>
-            <th style="background:rgba(255,255,255,0.15);">OTP+Tel</th>
-            <th>Temassız</th>
-            <th style="background:rgba(255,255,255,0.2);">Toplam Başarılı</th>
-            <th>Toplam Parça</th>
+            <th style="background:rgba(255,255,255,0.12)">OTP+Tel</th>
+            <th>Temassiz</th>
+            <th style="background:rgba(255,255,255,0.2)">Toplam Basarili</th>
+            <th>Parca</th>
           </tr>
         </thead>
         <tbody id="adanaTbody"></tbody>
@@ -219,33 +131,26 @@
     </div>
   </div>
 
-  <!-- ASG TABLOSU -->
+  <!-- ASG -->
   <div class="section" id="asgSection">
     <div class="section-header">
-      <div style="display:flex;align-items:center;gap:8px;">
-        <div class="section-title">⭐ ASG <span class="section-count" id="asgCount">0</span></div>
-      </div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;">
-        <button class="wa-btn" onclick="shareWhatsApp('asg')">
-          <svg viewBox="0 0 24 24" fill="white" width="16" height="16"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-          Metin
-        </button>
-        <button class="wa-btn" onclick="shareScreenshot('asg')" style="background:#128C7E;">
-          📸 Görsel Paylaş
-        </button>
+      <div class="section-title">⭐ ASG <span class="section-count" id="asgCount">0</span></div>
+      <div class="btn-group">
+        <button class="wa-btn" onclick="shareWhatsApp('asg')">📋 Metin</button>
+        <button class="wa-btn dark" onclick="shareScreenshot('asg', this)">📸 Gorsel</button>
       </div>
     </div>
     <div class="table-wrap">
-      <table id="asgTable">
+      <table>
         <thead>
           <tr>
             <th>MOY</th>
             <th>OTP'li</th>
             <th>Telefon</th>
-            <th style="background:rgba(255,255,255,0.15);">OTP+Tel</th>
-            <th>Temassız</th>
-            <th style="background:rgba(255,255,255,0.2);">Toplam Başarılı</th>
-            <th>Toplam Parça</th>
+            <th style="background:rgba(255,255,255,0.12)">OTP+Tel</th>
+            <th>Temassiz</th>
+            <th style="background:rgba(255,255,255,0.2)">Toplam Basarili</th>
+            <th>Parca</th>
           </tr>
         </thead>
         <tbody id="asgTbody"></tbody>
@@ -254,226 +159,244 @@
   </div>
 </div>
 
-<div id="emptyState" style="display:none;">
-  <div class="empty-icon">⚠️</div>
-  <p id="emptyMsg">MOY Bazlı sayfası bulunamadı.</p>
-</div>
-
 <script>
-  let adanaData = [];
-  let asgData = [];
-  let reportDate = '';
+var adanaData = [];
+var asgData = [];
+var reportDate = '';
 
-  // Drag & drop
-  const card = document.getElementById('uploadCard');
-  card.addEventListener('dragover', e => { e.preventDefault(); card.classList.add('drag-over'); });
-  card.addEventListener('dragleave', () => card.classList.remove('drag-over'));
-  card.addEventListener('drop', e => {
-    e.preventDefault(); card.classList.remove('drag-over');
-    const file = e.dataTransfer.files[0];
-    if (file) processFile(file);
-  });
+function resetApp() {
+  document.getElementById('uploadCard').style.display = 'block';
+  document.getElementById('uploadCard').style.pointerEvents = 'auto';
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('fileInput').value = '';
+  adanaData = [];
+  asgData = [];
+}
 
-  function handleFile(e) {
-    const file = e.target.files[0];
-    if (file) processFile(file);
-  }
+var card = document.getElementById('uploadCard');
+card.addEventListener('dragover', function(e) { e.preventDefault(); card.style.borderColor='#00A651'; });
+card.addEventListener('dragleave', function() { card.style.borderColor='#b2dfb2'; });
+card.addEventListener('drop', function(e) {
+  e.preventDefault();
+  card.style.borderColor = '#b2dfb2';
+  var file = e.dataTransfer.files[0];
+  if (file) processFile(file);
+});
 
-  function processFile(file) {
-    document.getElementById('uploadCard').style.display = 'none';
-    document.getElementById('loadingEl').style.display = 'block';
-    document.getElementById('results').style.display = 'none';
-    document.getElementById('emptyState').style.display = 'none';
+function handleFile(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  var file = e.target.files[0];
+  if (file) processFile(file);
+}
 
-    // Dosya adından tarih çıkar
-    const nameMatch = file.name.match(/(\d{1,2})[_\-\s]?([A-Za-zÇçĞğİıÖöŞşÜü]+)/);
-    reportDate = nameMatch ? file.name.replace(/_/g,' ').replace('.xlsx','').replace('.xls','') : file.name;
+function processFile(file) {
+  document.getElementById('uploadCard').style.display = 'none';
+  document.getElementById('uploadCard').style.pointerEvents = 'none';
+  document.getElementById('loadingEl').style.display = 'block';
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('emptyState').style.display = 'none';
 
-    const reader = new FileReader();
-    reader.onload = e => {
-      try {
-        const wb = XLSX.read(e.target.result, { type: 'array' });
+  reportDate = file.name.replace(/_/g, ' ').replace('.xlsx', '').replace('.xls', '');
 
-        // MOY Bazlı sayfasını bul
-        const sheetName = wb.SheetNames.find(s => s.toLowerCase().includes('moy'));
-        if (!sheetName) {
-          showEmpty('MOY Bazlı sayfası bulunamadı. Lütfen doğru Excel dosyasını yükleyin.');
-          return;
-        }
-
-        const ws = wb.Sheets[sheetName];
-        const rows = XLSX.utils.sheet_to_json(ws, { defval: 0 });
-
-        if (!rows.length) { showEmpty('Veri bulunamadı.'); return; }
-
-        // Sütun isimlerini bul (esnek)
-        const sample = rows[0];
-        const keys = Object.keys(sample);
-        const findKey = (...terms) => keys.find(k => terms.some(t => k.toLowerCase().includes(t.toLowerCase()))) || '';
-
-        const ilKey      = findKey('İl', 'il');
-        const moyKey     = findKey('MOY', 'moy');
-        const otpSayiKey = findKey('OTP ile Teslim Edilen', 'otp ile teslim');
-        const otpKey     = findKey("OTP'li Teslimat Yüzdesi", "otp'li teslimat");
-        const telSayiKey = findKey('Telefon Numarası ile Teslim Edilen', 'telefon numarası ile teslim edilen');
-        const telKey     = findKey('Telefon Numarası ile Teslimat Yüzdesi', 'telefon numarası ile teslimat yüzdesi');
-        const temSayiKey = findKey('Temassız Teslim Edilen', 'temassız teslim edilen');
-        const temKey     = findKey('Temassız Teslimat Yüzdesi', 'temassız teslimat yüzdesi');
-        const topKey     = findKey('Toplam Teslim', 'toplam');
-
-        // Parse satır
-        function parseRow(r) {
-          const otpSayi  = parseInt(r[otpSayiKey])  || 0;  // OTP'li parça sayısı
-          const telSayi  = parseInt(r[telSayiKey])  || 0;  // Telefonlu parça sayısı
-          const temSayi  = parseInt(r[temSayiKey])  || 0;  // Fiziksel temassız parça sayısı
-          const toplam   = parseInt(r[topKey])       || 0;  // Toplam parça
-
-          // Yüzdeler: parça sayısı / toplam
-          const otpPct   = toplam > 0 ? otpSayi / toplam : 0;
-          const telPct   = toplam > 0 ? telSayi / toplam : 0;
-          const temPct   = toplam > 0 ? temSayi / toplam : 0;
-          const otpTelSayi     = otpSayi + telSayi;
-          const otpTelPct      = toplam > 0 ? otpTelSayi / toplam : 0;
-          const toplamBasarili = otpSayi + telSayi + temSayi;
-          const toplamPct      = toplam > 0 ? toplamBasarili / toplam : 0;
-
-          return {
-            moy: r[moyKey] || '',
-            otpSayi, telSayi, temSayi,
-            otpPct, telPct, temPct,
-            otpTelSayi, otpTelPct,
-            toplamBasarili, toplamPct,
-            toplam
-          };
-        }
-
-        // Adana filtresi
-        const adanaRaw = rows.filter(r => {
-          const il = (r[ilKey] || '').toString().trim().toLowerCase();
-          return il === 'adana';
-        });
-
-        // Adana'dakilerden non-ASG al
-        const adanaNonASG = adanaRaw.filter(r => !r[moyKey]?.toString().toUpperCase().includes('ASG'));
-        // ASG'ler tüm satırlardan — isimde ASG geçenler (il fark etmez)
-        const adanaASG = rows.filter(r => r[moyKey]?.toString().toUpperCase().includes('ASG'));
-
-        // Yüksekten alçağa sırala (temassız = OTP + Telefon)
-        adanaData = adanaNonASG.map(parseRow).sort((a,b) => b.toplamPct - a.toplamPct);
-        asgData   = adanaASG.map(parseRow).sort((a,b) => b.toplamPct - a.toplamPct);
-
-        renderTables();
-
-      } catch(err) {
-        showEmpty('Dosya okunamadı: ' + err.message);
-      }
-    };
-    reader.readAsArrayBuffer(file);
-  }
-
-  function rowColor(p) {
-    if (p >= 0.90) return '#1a7a3c';
-    if (p >= 0.75) return '#27ae60';
-    if (p >= 0.60) return '#e67e22';
-    return '#c0392b';
-  }
-
-  function fmt(val) { return (val * 100).toFixed(2) + '%'; }
-  function fmtN(val) { return val.toLocaleString('tr-TR'); }
-
-  function renderTbody(tbodyId, data) {
-    const tbody = document.getElementById(tbodyId);
-    tbody.innerHTML = '';
-    data.forEach((r, i) => {
-      const color = rowColor(r.toplamPct);
-      const tr = document.createElement('tr');
-      tr.style.background = color;
-      tr.innerHTML = `
-        <td><span class="rank-badge">${i+1}</span>${r.moy}</td>
-        <td>${r.otpSayi} <small>(${fmt(r.otpPct)})</small></td>
-        <td>${r.telSayi} <small>(${fmt(r.telPct)})</small></td>
-        <td style="background:rgba(0,0,0,0.12);font-weight:700;">${r.otpTelSayi} <small>(${fmt(r.otpTelPct)})</small></td>
-        <td>${r.temSayi} <small>(${fmt(r.temPct)})</small></td>
-        <td style="background:rgba(0,0,0,0.2);font-weight:800;">${r.toplamBasarili} <small>(${fmt(r.toplamPct)})</small></td>
-        <td>${fmtN(r.toplam)}</td>
-      `;
-      tbody.appendChild(tr);
-    });
-  }
-
-  function renderTables() {
-    document.getElementById('loadingEl').style.display = 'none';
-    document.getElementById('results').style.display = 'block';
-    document.getElementById('headerDate').textContent = reportDate;
-
-    document.getElementById('adanaCount').textContent = adanaData.length;
-    document.getElementById('asgCount').textContent = asgData.length;
-
-    renderTbody('adanaTbody', adanaData);
-    renderTbody('asgTbody', asgData);
-  }
-
-  function showEmpty(msg) {
-    document.getElementById('loadingEl').style.display = 'none';
-    document.getElementById('emptyState').style.display = 'block';
-    document.getElementById('emptyMsg').textContent = msg;
-    document.getElementById('uploadCard').style.display = 'block';
-  }
-
-  /* ── EKRAN GÖRÜNTÜSÜ PAYLAŞIM ── */
-  async function shareScreenshot(type) {
-    const sectionId = type === 'adana' ? 'adanaSection' : 'asgSection';
-    const section = document.getElementById(sectionId);
-    const btn = event.target;
-    btn.textContent = '⏳ Hazırlanıyor...';
-    btn.disabled = true;
-
+  var reader = new FileReader();
+  reader.onload = function(ev) {
     try {
-      const canvas = await html2canvas(section, {
-        scale: 2,
-        backgroundColor: '#f0f4f0',
-        useCORS: true,
-        logging: false
+      var wb = XLSX.read(ev.target.result, { type: 'array' });
+      var sheetName = null;
+      for (var i = 0; i < wb.SheetNames.length; i++) {
+        if (wb.SheetNames[i].toLowerCase().indexOf('moy') !== -1) {
+          sheetName = wb.SheetNames[i];
+          break;
+        }
+      }
+      if (!sheetName) { showEmpty('MOY Bazli sayfasi bulunamadi.'); return; }
+
+      var ws = wb.Sheets[sheetName];
+      var rows = XLSX.utils.sheet_to_json(ws, { defval: 0 });
+      if (!rows.length) { showEmpty('Veri bulunamadi.'); return; }
+
+      var keys = Object.keys(rows[0]);
+
+      function findKey() {
+        var terms = Array.prototype.slice.call(arguments);
+        for (var i = 0; i < keys.length; i++) {
+          var k = keys[i].toLowerCase();
+          for (var j = 0; j < terms.length; j++) {
+            if (k.indexOf(terms[j].toLowerCase()) !== -1) return keys[i];
+          }
+        }
+        return '';
+      }
+
+      var ilKey      = findKey('il');
+      var moyKey     = findKey('moy');
+      var otpSayiKey = findKey('otp ile teslim edilen');
+      var telSayiKey = findKey('telefon numarasi ile teslim edilen', 'telefon numarası ile teslim edilen');
+      var temSayiKey = findKey('temassiz teslim edilen', 'temassız teslim edilen');
+      var topKey     = findKey('toplam teslim');
+
+      // Fallback key search
+      if (!otpSayiKey) otpSayiKey = findKey('otp ile');
+      if (!telSayiKey) telSayiKey = findKey('telefon numar');
+      if (!temSayiKey) temSayiKey = findKey('temassiz teslim', 'temassız teslim');
+
+      function parseRow(r) {
+        var otpSayi = parseInt(r[otpSayiKey]) || 0;
+        var telSayi = parseInt(r[telSayiKey]) || 0;
+        var temSayi = parseInt(r[temSayiKey]) || 0;
+        var toplam  = parseInt(r[topKey])     || 0;
+        var otpPct  = toplam > 0 ? otpSayi / toplam : 0;
+        var telPct  = toplam > 0 ? telSayi / toplam : 0;
+        var temPct  = toplam > 0 ? temSayi / toplam : 0;
+        var otpTelSayi   = otpSayi + telSayi;
+        var otpTelPct    = toplam > 0 ? otpTelSayi / toplam : 0;
+        var toplamBasarili = otpSayi + telSayi + temSayi;
+        var toplamPct    = toplam > 0 ? toplamBasarili / toplam : 0;
+        return {
+          moy: (r[moyKey] || '').toString().trim(),
+          otpSayi: otpSayi, telSayi: telSayi, temSayi: temSayi,
+          otpPct: otpPct, telPct: telPct, temPct: temPct,
+          otpTelSayi: otpTelSayi, otpTelPct: otpTelPct,
+          toplamBasarili: toplamBasarili, toplamPct: toplamPct, toplam: toplam
+        };
+      }
+
+      var adanaRaw = rows.filter(function(r) {
+        return (r[ilKey] || '').toString().trim().toLowerCase() === 'adana';
+      });
+      var adanaNonASG = adanaRaw.filter(function(r) {
+        return (r[moyKey] || '').toString().toUpperCase().indexOf('ASG') === -1;
+      });
+      var adanaASG = rows.filter(function(r) {
+        return (r[moyKey] || '').toString().toUpperCase().indexOf('ASG') !== -1;
       });
 
-      canvas.toBlob(async (blob) => {
-        const file = new File([blob], 'moy-raporu.png', { type: 'image/png' });
+      adanaData = adanaNonASG.map(parseRow).sort(function(a,b) { return b.toplamPct - a.toplamPct; });
+      asgData   = adanaASG.map(parseRow).sort(function(a,b) { return b.toplamPct - a.toplamPct; });
 
-        // Web Share API (mobilde çalışır)
-        if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-          await navigator.share({
-            files: [file],
-            title: 'MOY Raporu',
-            text: type === 'adana' ? 'Adana MOY Raporu' : 'ASG MOY Raporu'
-          });
-        } else {
-          // Masaüstünde direkt indir
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = `moy-raporu-${type}.png`;
-          a.click();
-          URL.revokeObjectURL(url);
-          alert('Resim indirildi! WhatsApp'ta paylaşabilirsiniz.');
-        }
-
-        btn.textContent = '📸 Görsel Paylaş';
-        btn.disabled = false;
-      }, 'image/png');
-
+      renderTables();
     } catch(err) {
-      alert('Hata: ' + err.message);
-      btn.textContent = '📸 Görsel Paylaş';
-      btn.disabled = false;
+      showEmpty('Dosya okunamadi: ' + err.message);
     }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+function rowColor(p) {
+  if (p >= 0.90) return '#1a7a3c';
+  if (p >= 0.75) return '#27ae60';
+  if (p >= 0.60) return '#e67e22';
+  return '#c0392b';
+}
+
+function fmt(val) {
+  return (val * 100).toFixed(2) + '%';
+}
+
+function fmtN(val) {
+  return val.toLocaleString('tr-TR');
+}
+
+function renderTbody(tbodyId, data) {
+  var tbody = document.getElementById(tbodyId);
+  tbody.innerHTML = '';
+  for (var i = 0; i < data.length; i++) {
+    var r = data[i];
+    var color = rowColor(r.toplamPct);
+    var tr = document.createElement('tr');
+    tr.style.background = color;
+    tr.innerHTML =
+      '<td><span class="rank-badge">' + (i+1) + '</span>' + r.moy + '</td>' +
+      '<td>' + r.otpSayi + '<br><small>(' + fmt(r.otpPct) + ')</small></td>' +
+      '<td>' + r.telSayi + '<br><small>(' + fmt(r.telPct) + ')</small></td>' +
+      '<td style="background:rgba(0,0,0,0.12);font-weight:700">' + r.otpTelSayi + '<br><small>(' + fmt(r.otpTelPct) + ')</small></td>' +
+      '<td>' + r.temSayi + '<br><small>(' + fmt(r.temPct) + ')</small></td>' +
+      '<td style="background:rgba(0,0,0,0.2);font-weight:800">' + r.toplamBasarili + '<br><small>(' + fmt(r.toplamPct) + ')</small></td>' +
+      '<td>' + fmtN(r.toplam) + '</td>';
+    tbody.appendChild(tr);
   }
+}
 
-  /* ── WHATSAPP PAYLAŞIM ── */
-  function shareWhatsApp(type) {
-    const data = type === 'adana' ? adanaData : asgData;
-    const title = type === 'adana' ? '🏙️ ADANA MOY RAPORU' : '⭐ ASG MOY RAPORU';
+function renderTables() {
+  document.getElementById('loadingEl').style.display = 'none';
+  document.getElementById('uploadCard').style.display = 'none';
+  document.getElementById('results').style.display = 'block';
+  document.getElementById('headerDate').textContent = reportDate;
+  document.getElementById('adanaCount').textContent = adanaData.length;
+  document.getElementById('asgCount').textContent = asgData.length;
+  renderTbody('adanaTbody', adanaData);
+  renderTbody('asgTbody', asgData);
+}
 
-    const emojis = ['🥇','🥈','🥉'];
-    const colorEmoji = (pct) => {
-      if (pct >= 0.85) return '🟢';
-  
+function showEmpty(msg) {
+  document.getElementById('loadingEl').style.display = 'none';
+  document.getElementById('emptyState').style.display = 'block';
+  document.getElementById('emptyMsg').textContent = msg;
+  document.getElementById('uploadCard').style.display = 'block';
+  document.getElementById('uploadCard').style.pointerEvents = 'auto';
+}
+
+function shareWhatsApp(type) {
+  var data = type === 'adana' ? adanaData : asgData;
+  var title = type === 'adana' ? 'ADANA MOY RAPORU' : 'ASG MOY RAPORU';
+  var msg = '*' + title + '*\n';
+  msg += '📅 ' + reportDate + '\n';
+  msg += '----------------------------\n\n';
+  for (var i = 0; i < data.length; i++) {
+    var r = data[i];
+    var medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : (i+1) + '.';
+    var dot = r.toplamPct >= 0.90 ? '🟢' : r.toplamPct >= 0.75 ? '🟡' : r.toplamPct >= 0.60 ? '🟠' : '🔴';
+    msg += medal + ' *' + r.moy + '*\n';
+    msg += dot + ' Toplam: ' + r.toplamBasarili + '/' + r.toplam + ' (%' + (r.toplamPct*100).toFixed(1) + ')\n';
+    msg += '📦 OTP: ' + r.otpSayi + ' (%' + (r.otpPct*100).toFixed(1) + ') | 📞 Tel: ' + r.telSayi + ' (%' + (r.telPct*100).toFixed(1) + ')\n';
+    msg += '🤝 Temassiz: ' + r.temSayi + ' (%' + (r.temPct*100).toFixed(1) + ')\n\n';
+  }
+  msg += '_Kolay Gelsin MOY Raporu_';
+  window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+}
+
+function shareScreenshot(type, btnEl) {
+  var sectionId = type === 'adana' ? 'adanaSection' : 'asgSection';
+  var section = document.getElementById(sectionId);
+  var origText = btnEl.textContent;
+  btnEl.textContent = 'Hazirlaniyor...';
+  btnEl.disabled = true;
+
+  html2canvas(section, {
+    scale: 2,
+    backgroundColor: '#f0f4f0',
+    useCORS: true,
+    logging: false
+  }).then(function(canvas) {
+    canvas.toBlob(function(blob) {
+      var file = new File([blob], 'moy-raporu.png', { type: 'image/png' });
+      if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+        navigator.share({ files: [file], title: 'MOY Raporu' }).then(function() {
+          btnEl.textContent = origText;
+          btnEl.disabled = false;
+        }).catch(function() {
+          btnEl.textContent = origText;
+          btnEl.disabled = false;
+        });
+      } else {
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'moy-raporu-' + type + '.png';
+        a.click();
+        URL.revokeObjectURL(url);
+        btnEl.textContent = origText;
+        btnEl.disabled = false;
+      }
+    }, 'image/png');
+  }).catch(function(err) {
+    alert('Gorsel alinamadi: ' + err.message);
+    btnEl.textContent = origText;
+    btnEl.disabled = false;
+  });
+}
+</script>
+</body>
+</html>  
