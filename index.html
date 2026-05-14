@@ -305,10 +305,14 @@
 
         // Parse satır
         function parseRow(r) {
-          const otp = parseFloat(r[otpKey]) || 0;
-          const tel = parseFloat(r[telKey]) || 0;
-          const tem = parseFloat(r[temKey]) || 0;
+          let otp = parseFloat(r[otpKey]) || 0;
+          let tel = parseFloat(r[telKey]) || 0;
+          let tem = parseFloat(r[temKey]) || 0;
           const toplam = parseInt(r[topKey]) || 0;
+          // Excel yüzdesi 0-1 arasında değilse (örn: 81 olarak kaydedilmişse) 100'e böl
+          if (otp > 1) otp = otp / 100;
+          if (tel > 1) tel = tel / 100;
+          if (tem > 1) tem = tem / 100;
           const temassiz = otp + tel;
           return {
             moy: r[moyKey] || '',
@@ -340,13 +344,14 @@
   }
 
   function rowColor(pct) {
-    if (pct >= 0.85) return '#1a7a3c';
-    if (pct >= 0.70) return '#27ae60';
-    if (pct >= 0.60) return '#e67e22';
+    const p = pct > 1 ? pct / 100 : pct;
+    if (p >= 0.85) return '#1a7a3c';
+    if (p >= 0.70) return '#27ae60';
+    if (p >= 0.60) return '#e67e22';
     return '#c0392b';
   }
 
-  function fmt(val) { return (val * 100).toFixed(2) + '%'; }
+  function fmt(val) { const v = val > 1 ? val : val * 100; return v.toFixed(2) + '%'; }
   function fmtN(val) { return val.toLocaleString('tr-TR'); }
 
   function renderTbody(tbodyId, data) {
@@ -407,8 +412,11 @@
       const medal = emojis[i] || `${i+1}.`;
       const dot = colorEmoji(r.temassiz);
       msg += `${medal} *${r.moy}*\n`;
-      msg += `${dot} Temassız: %${(r.temassiz*100).toFixed(1)}\n`;
-      msg += `📦 OTP: %${(r.otp*100).toFixed(1)} | 📞 Tel: %${(r.tel*100).toFixed(1)}\n`;
+      const tm = r.temassiz > 1 ? r.temassiz : r.temassiz*100;
+      const op = r.otp > 1 ? r.otp : r.otp*100;
+      const tl = r.tel > 1 ? r.tel : r.tel*100;
+      msg += `${dot} Temassız: %${tm.toFixed(1)}\n`;
+      msg += `📦 OTP: %${op.toFixed(1)} | 📞 Tel: %${tl.toFixed(1)}\n`;
       msg += `📮 Toplam: ${fmtN(r.toplam)} parça\n\n`;
     });
 
@@ -419,4 +427,4 @@
   }
 </script>
 </body>
-  </html>
+</html>
