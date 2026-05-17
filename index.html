@@ -9,12 +9,23 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 * { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:'Inter',sans-serif; background:#f0f4f0; min-height:100vh; padding:16px 12px 40px; }
-.header { display:flex; align-items:center; gap:12px; background:#00A651; border-radius:16px; padding:14px 18px; margin-bottom:16px; box-shadow:0 4px 16px rgba(0,166,81,0.3); }
-.header-logo { width:42px; height:42px; background:white; border-radius:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-.header-logo svg { width:26px; height:26px; }
-.header-text h1 { font-size:16px; font-weight:800; color:white; }
-.header-text p { font-size:11px; color:rgba(255,255,255,0.8); margin-top:2px; }
+body { font-family:'Inter',sans-serif; background:#f0f4f0; min-height:100vh; padding:0 0 40px; }
+
+/* HEADER */
+.header { display:flex; align-items:center; gap:12px; background:#00A651; padding:14px 16px; margin-bottom:0; box-shadow:0 2px 12px rgba(0,166,81,0.3); }
+.header-logo { width:40px; height:40px; background:white; border-radius:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.header-logo svg { width:24px; height:24px; }
+.header-text h1 { font-size:15px; font-weight:800; color:white; }
+.header-text p { font-size:11px; color:rgba(255,255,255,0.8); margin-top:1px; }
+
+/* TABS */
+.tabs { display:flex; background:#00A651; padding:0 16px 0; gap:0; }
+.tab { flex:1; padding:10px 0; text-align:center; font-size:13px; font-weight:700; color:rgba(255,255,255,0.7); cursor:pointer; border-bottom:3px solid transparent; transition:all 0.2s; }
+.tab.active { color:white; border-bottom:3px solid white; }
+
+.page-content { padding:16px 12px; }
+
+/* UPLOAD */
 .upload-card { background:white; border-radius:16px; border:2px dashed #b2dfb2; padding:32px 16px; text-align:center; margin-bottom:16px; position:relative; box-shadow:0 2px 12px rgba(0,0,0,0.06); transition:all 0.2s; }
 .upload-card:hover { border-color:#00A651; background:#f0faf5; }
 .upload-card input[type=file] { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%; }
@@ -22,22 +33,31 @@ body { font-family:'Inter',sans-serif; background:#f0f4f0; min-height:100vh; pad
 .upload-title { font-size:15px; font-weight:700; color:#1a1a1a; margin-bottom:6px; }
 .upload-sub { font-size:12px; color:#888; }
 .upload-sub strong { color:#00A651; }
+
+/* LOADING */
 .loading { display:none; text-align:center; padding:32px; background:white; border-radius:16px; margin-bottom:16px; }
 .spinner { width:36px; height:36px; border:3px solid #e0e0e0; border-top-color:#00A651; border-radius:50%; animation:spin 0.8s linear infinite; margin:0 auto 12px; }
 @keyframes spin { to { transform:rotate(360deg); } }
+
+/* LEGEND */
 .legend { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
 .legend-item { display:flex; align-items:center; gap:5px; font-size:11px; font-weight:600; color:#444; background:white; padding:5px 10px; border-radius:8px; box-shadow:0 1px 4px rgba(0,0,0,0.06); }
 .legend-dot { width:12px; height:12px; border-radius:3px; }
+
 .new-btn { margin-bottom:14px; background:white; border:1.5px solid #ddd; border-radius:10px; padding:8px 16px; font-family:inherit; font-size:12px; font-weight:600; color:#555; cursor:pointer; }
 .new-btn:hover { border-color:#00A651; color:#00A651; }
+
+/* SECTION */
 .section { margin-bottom:24px; }
 .section-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; flex-wrap:wrap; gap:8px; }
 .section-title { font-size:14px; font-weight:800; color:#1a1a1a; padding:8px 14px; background:white; border-radius:10px; display:inline-flex; align-items:center; gap:6px; box-shadow:0 2px 8px rgba(0,0,0,0.06); border-left:4px solid #00A651; }
 .section-count { font-size:11px; font-weight:700; color:white; background:#00A651; padding:2px 8px; border-radius:20px; }
 .btn-group { display:flex; gap:8px; flex-wrap:wrap; }
 .wa-btn { display:inline-flex; align-items:center; gap:6px; background:#25D366; color:white; border:none; border-radius:10px; padding:8px 14px; font-family:inherit; font-size:12px; font-weight:700; cursor:pointer; box-shadow:0 2px 8px rgba(37,211,102,0.3); transition:all 0.2s; }
-.wa-btn.dark { background:#128C7E; }
+.wa-btn.dark { background:#128C7E; box-shadow:0 2px 8px rgba(18,140,126,0.3); }
 .wa-btn:disabled { opacity:0.6; cursor:not-allowed; }
+
+/* TABLE */
 .table-wrap { background:white; border-radius:14px; overflow:hidden; box-shadow:0 2px 12px rgba(0,0,0,0.08); overflow-x:auto; }
 table { width:100%; border-collapse:collapse; min-width:360px; }
 thead tr { background:#003d20; }
@@ -46,11 +66,32 @@ th:first-child { text-align:left; min-width:160px; }
 td { padding:9px 12px; font-size:12px; font-weight:500; text-align:center; color:white; border-bottom:1px solid rgba(0,0,0,0.08); }
 td:first-child { text-align:left; font-weight:700; }
 tr:last-child td { border-bottom:none; }
-td small { font-size:10px; opacity:0.85; display:block; }
 .rank-badge { display:inline-block; width:20px; height:20px; background:rgba(255,255,255,0.25); border-radius:5px; font-size:10px; font-weight:800; line-height:20px; text-align:center; margin-right:5px; }
+
 #results { display:none; }
 #emptyState { display:none; text-align:center; padding:32px; background:white; border-radius:16px; margin-bottom:16px; }
 #emptyState p { font-size:14px; color:#888; margin-top:8px; }
+
+/* GEÇMİŞ SEKMESİ */
+.history-empty { text-align:center; padding:48px 24px; }
+.history-empty-icon { font-size:48px; margin-bottom:12px; }
+.history-empty p { font-size:14px; color:#888; font-weight:500; }
+
+.history-list { display:flex; flex-direction:column; gap:12px; }
+
+.history-item { background:white; border-radius:14px; padding:14px 16px; box-shadow:0 2px 10px rgba(0,0,0,0.06); border:1px solid #e8e8e8; }
+.history-item-top { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+.history-item-name { font-size:14px; font-weight:700; color:#1a1a1a; }
+.history-item-date { font-size:11px; color:#888; font-weight:500; margin-top:2px; }
+.history-item-stats { display:flex; gap:8px; margin-bottom:10px; flex-wrap:wrap; }
+.history-stat { background:#f0f4f0; border-radius:8px; padding:4px 10px; font-size:11px; font-weight:600; color:#444; }
+.history-stat span { color:#00A651; font-weight:800; }
+.history-item-btns { display:flex; gap:8px; flex-wrap:wrap; }
+.hist-btn { flex:1; padding:8px 0; border-radius:10px; border:none; font-family:inherit; font-size:12px; font-weight:700; cursor:pointer; transition:all 0.2s; }
+.hist-btn-view { background:#00A651; color:white; }
+.hist-btn-view:hover { background:#008f45; }
+.hist-btn-del { background:#fdf0f0; color:#e74c3c; border:1px solid #fdd; }
+.hist-btn-del:hover { background:#e74c3c; color:white; }
 </style>
 </head>
 <body>
@@ -67,143 +108,106 @@ td small { font-size:10px; opacity:0.85; display:block; }
   </div>
 </div>
 
-<div class="upload-card" id="uploadCard">
-  <input type="file" id="fileInput" accept=".xlsx,.xls" onchange="handleFile(event)" />
-  <div class="upload-icon">📊</div>
-  <div class="upload-title">Excel Dosyasini Yukleyin</div>
-  <div class="upload-sub">Ham OTP raporunu buraya surukleyin veya secin<br><strong>.xlsx veya .xls formati</strong></div>
+<!-- SEKMELER -->
+<div class="tabs">
+  <div class="tab active" id="tabRapor" onclick="switchTab('rapor')">📊 Rapor</div>
+  <div class="tab" id="tabGecmis" onclick="switchTab('gecmis')">🕒 Gecmis</div>
 </div>
 
-<div class="loading" id="loadingEl">
-  <div class="spinner"></div>
-  <p style="font-size:13px;color:#888;font-weight:500;">Rapor olusturuluyor...</p>
-</div>
-
-<div id="emptyState">
-  <div style="font-size:40px">⚠️</div>
-  <p id="emptyMsg">Veri bulunamadi.</p>
-</div>
-
-<div id="results">
-  <button class="new-btn" onclick="resetApp()">← Yeni Excel Yukle</button>
-  <div class="legend">
-    <div class="legend-item"><div class="legend-dot" style="background:#1a7a3c"></div>%90-100 Mukemmel</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#239b56"></div>%70-89 Iyi</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div>%0-69 Dusuk</div>
+<!-- RAPOR SEKMESİ -->
+<div class="page-content" id="pageRapor">
+  <div class="upload-card" id="uploadCard">
+    <input type="file" id="fileInput" accept=".xlsx,.xls" onchange="handleFile(event)" />
+    <div class="upload-icon">📊</div>
+    <div class="upload-title">Excel Dosyasini Yukleyin</div>
+    <div class="upload-sub">Ham OTP raporunu buraya surukleyin veya secin<br><strong>.xlsx veya .xls formati</strong></div>
   </div>
 
-  <div class="section" id="adanaSection">
-    <div class="section-header">
-      <div class="section-title">🏙️ ADANA <span class="section-count" id="adanaCount">0</span></div>
-      <div class="btn-group">
-        <button class="wa-btn" onclick="shareWhatsApp('adana')">📋 Metin</button>
-        <button class="wa-btn dark" onclick="captureSection('adana', this)">📸 Gorsel</button>
+  <div class="loading" id="loadingEl">
+    <div class="spinner"></div>
+    <p style="font-size:13px;color:#888;font-weight:500;">Rapor olusturuluyor...</p>
+  </div>
+
+  <div id="emptyState">
+    <div style="font-size:40px">⚠️</div>
+    <p id="emptyMsg">Veri bulunamadi.</p>
+  </div>
+
+  <div id="results">
+    <button class="new-btn" onclick="resetApp()">← Yeni Excel Yukle</button>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#1a7a3c"></div>%90-100 Mukemmel</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#239b56"></div>%70-89 Iyi</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div>%0-69 Dusuk</div>
+    </div>
+
+    <div class="section" id="adanaSection">
+      <div class="section-header">
+        <div class="section-title">🏙️ ADANA <span class="section-count" id="adanaCount">0</span></div>
+        <div class="btn-group">
+          <button class="wa-btn" onclick="shareWhatsApp('adana')">📋 Metin</button>
+          <button class="wa-btn dark" onclick="captureSection('adana', this)">📸 Gorsel</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>MOY</th><th>OTP'li</th><th>Telefon</th>
+            <th style="background:rgba(255,255,255,0.2)">OTP+Tel Toplam</th><th>Parca</th>
+          </tr></thead>
+          <tbody id="adanaTbody"></tbody>
+        </table>
       </div>
     </div>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>MOY</th>
-            <th>OTP'li</th>
-            <th>Telefon</th>
-            <th style="background:rgba(255,255,255,0.2)">OTP+Tel Toplam</th>
-            <th>Parca</th>
-          </tr>
-        </thead>
-        <tbody id="adanaTbody"></tbody>
-      </table>
-    </div>
-  </div>
 
-  <div class="section" id="asgSection">
-    <div class="section-header">
-      <div class="section-title">⭐ ASG <span class="section-count" id="asgCount">0</span></div>
-      <div class="btn-group">
-        <button class="wa-btn" onclick="shareWhatsApp('asg')">📋 Metin</button>
-        <button class="wa-btn dark" onclick="captureSection('asg', this)">📸 Gorsel</button>
+    <div class="section" id="asgSection">
+      <div class="section-header">
+        <div class="section-title">⭐ ASG <span class="section-count" id="asgCount">0</span></div>
+        <div class="btn-group">
+          <button class="wa-btn" onclick="shareWhatsApp('asg')">📋 Metin</button>
+          <button class="wa-btn dark" onclick="captureSection('asg', this)">📸 Gorsel</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th>MOY</th><th>OTP'li</th><th>Telefon</th>
+            <th style="background:rgba(255,255,255,0.2)">OTP+Tel Toplam</th><th>Parca</th>
+          </tr></thead>
+          <tbody id="asgTbody"></tbody>
+        </table>
       </div>
     </div>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>MOY</th>
-            <th>OTP'li</th>
-            <th>Telefon</th>
-            <th style="background:rgba(255,255,255,0.2)">OTP+Tel Toplam</th>
-            <th>Parca</th>
-          </tr>
-        </thead>
-        <tbody id="asgTbody"></tbody>
-      </table>
-    </div>
   </div>
+</div>
+
+<!-- GEÇMİŞ SEKMESİ -->
+<div class="page-content" id="pageGecmis" style="display:none">
+  <div id="historyList"></div>
 </div>
 
 <script>
 var ADANA_LISTESI = [
-  'nihat yigit plasiyer',
-  'halil ibrahim demirbaş plasiyer',
-  'erdinc ergen plasiyer',
-  'gokhan dalgic plasiyer',
-  'ibrahim turan plasiyer',
-  'serkan ibis',
-  'ercan gedik plasiyer',
-  'murat kat plasiyer',
-  'ahmet kizilay plasiyer',
-  'sinan sizucer',
-  'yekta bayram plasiyer',
-  'umut can koksal',
-  'ahmet akkilic sendeo',
-  'ahmet cosgun plasiyer',
-  'kaan aksoy plasiyer',
-  'omer ayzit plasiyer',
-  'orhan kagni',
-  'faruk tayyan plasiyer',
-  'can berk sahin plasiyer',
-  'lokman adigüzel plasiyer',
-  'emir ekiz plasiyer',
-  'mucahit konyar plasiyer',
-  'ferit can solmaz plasiyer',
-  'furkan altan',
-  'ozgur kose plasiyer',
-  'emrah akyel sendeo',
-  'burhan durmus sendeo asg',
-  'burak ozturk sendeo',
-  'mehmet gokce plasiyer',
-  'murat can oksuz plasiyer',
-  'serdar karaoglan plasiyer',
-  'erhan karatas sendeo',
-  'hamza bahadir ozel plasiyer',
-  'ahmet seckin',
-  'burak ovec plasiyer',
-  'hulusi copuroglu plasiyer',
-  'mahmut ozay plasiyer',
-  'duhan yavas plasiyer',
-  'berkay sarieroğlularindan sendeo',
-  'alper karakas adana'
+  'nihat yigit plasiyer','halil ibrahim demirbaş plasiyer','erdinc ergen plasiyer',
+  'gokhan dalgic plasiyer','ibrahim turan plasiyer','serkan ibis','ercan gedik plasiyer',
+  'murat kat plasiyer','ahmet kizilay plasiyer','sinan sizucer','yekta bayram plasiyer',
+  'umut can koksal','ahmet akkilic sendeo','ahmet cosgun plasiyer','kaan aksoy plasiyer',
+  'omer ayzit plasiyer','orhan kagni','faruk tayyan plasiyer','can berk sahin plasiyer',
+  'lokman adigüzel plasiyer','emir ekiz plasiyer','mucahit konyar plasiyer',
+  'ferit can solmaz plasiyer','furkan altan','ozgur kose plasiyer','emrah akyel sendeo',
+  'burhan durmus sendeo asg','burak ozturk sendeo','mehmet gokce plasiyer',
+  'murat can oksuz plasiyer','serdar karaoglan plasiyer','erhan karatas sendeo',
+  'hamza bahadir ozel plasiyer','ahmet seckin','burak ovec plasiyer',
+  'hulusi copuroglu plasiyer','mahmut ozay plasiyer','duhan yavas plasiyer',
+  'berkay sarieroğlularindan sendeo','alper karakas adana'
 ];
 
 var ASG_LISTESI = [
-  'mustafa gur asg',
-  'zeki yilmaz asg',
-  'huseyin okuyucu spot',
-  'ozgur caka asg',
-  'burak firat sendeo asg',
-  'furkan firat asg',
-  'neslihan erin',
-  'burhan durmus sendeo asg',
-  'hava yolacan asg',
-  'enes furkan gul sendeo asg',
-  'mert gul asg',
-  'ozay aydinli sendeo asg',
-  'hilmi dogan asg',
-  'erkan durmus asg',
-  'cemal caka asg',
-  'omer faruk aygoren asg',
-  'lutfi can atik asg',
-  'omer oksuz asg'
+  'mustafa gur asg','zeki yilmaz asg','huseyin okuyucu spot','ozgur caka asg',
+  'burak firat sendeo asg','furkan firat asg','neslihan erin','burhan durmus sendeo asg',
+  'hava yolacan asg','enes furkan gul sendeo asg','mert gul asg','ozay aydinli sendeo asg',
+  'hilmi dogan asg','erkan durmus asg','cemal caka asg','omer faruk aygoren asg',
+  'lutfi can atik asg','omer oksuz asg'
 ];
 
 function normalize(str) {
@@ -215,20 +219,108 @@ function normalize(str) {
     .replace(/Ö/g,'o').replace(/ö/g,'o')
     .replace(/Ç/g,'c').replace(/ç/g,'c')
     .replace(/â/g,'a').replace(/î/g,'i').replace(/û/g,'u')
-    .toLowerCase()
-    .replace(/\s+/g,' ').trim();
+    .toLowerCase().replace(/\s+/g,' ').trim();
 }
 
 function isInList(name, list) {
   var n = normalize(name);
-  for (var i = 0; i < list.length; i++) {
-    if (n === list[i]) return true;
-  }
+  for (var i = 0; i < list.length; i++) { if (n === list[i]) return true; }
   return false;
 }
 
 var adanaData = [], asgData = [], reportDate = '';
+var HISTORY_KEY = 'moy_history';
 
+/* ── TAB ── */
+function switchTab(tab) {
+  document.getElementById('tabRapor').className = 'tab' + (tab==='rapor' ? ' active' : '');
+  document.getElementById('tabGecmis').className = 'tab' + (tab==='gecmis' ? ' active' : '');
+  document.getElementById('pageRapor').style.display = tab==='rapor' ? 'block' : 'none';
+  document.getElementById('pageGecmis').style.display = tab==='gecmis' ? 'block' : 'none';
+  if (tab === 'gecmis') renderHistory();
+}
+
+/* ── HISTORY ── */
+function loadHistory() {
+  try { return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]'); } catch(e) { return []; }
+}
+
+function saveToHistory(date, adana, asg) {
+  var history = loadHistory();
+  // Aynı isimde varsa üzerine yaz
+  var existing = -1;
+  for (var i = 0; i < history.length; i++) {
+    if (history[i].date === date) { existing = i; break; }
+  }
+  var entry = {
+    date: date,
+    savedAt: new Date().toLocaleString('tr-TR'),
+    adana: adana,
+    asg: asg
+  };
+  if (existing >= 0) { history[existing] = entry; }
+  else { history.unshift(entry); }
+  // Max 30 rapor tut
+  if (history.length > 30) history = history.slice(0, 30);
+  localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+}
+
+function deleteHistory(date) {
+  var history = loadHistory();
+  history = history.filter(function(h) { return h.date !== date; });
+  localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+  renderHistory();
+}
+
+function loadFromHistory(date) {
+  var history = loadHistory();
+  for (var i = 0; i < history.length; i++) {
+    if (history[i].date === date) {
+      adanaData = history[i].adana;
+      asgData = history[i].asg;
+      reportDate = history[i].date;
+      switchTab('rapor');
+      renderTables();
+      return;
+    }
+  }
+}
+
+function renderHistory() {
+  var history = loadHistory();
+  var el = document.getElementById('historyList');
+  if (!history.length) {
+    el.innerHTML = '<div class="history-empty"><div class="history-empty-icon">📂</div><p>Henüz kaydedilmiş rapor yok.<br>Excel yukleyince otomatik kaydedilir.</p></div>';
+    return;
+  }
+  var html = '<div class="history-list">';
+  for (var i = 0; i < history.length; i++) {
+    var h = history[i];
+    var adanaOk = h.adana.filter(function(r){ return r.otpTelPct >= 0.70; }).length;
+    var asgOk   = h.asg.filter(function(r){ return r.otpTelPct >= 0.70; }).length;
+    html += '<div class="history-item">' +
+      '<div class="history-item-top">' +
+        '<div>' +
+          '<div class="history-item-name">📅 ' + h.date + '</div>' +
+          '<div class="history-item-date">Kaydedildi: ' + h.savedAt + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="history-item-stats">' +
+        '<div class="history-stat">🏙️ Adana: <span>' + h.adana.length + '</span> kisi</div>' +
+        '<div class="history-stat">⭐ ASG: <span>' + h.asg.length + '</span> kisi</div>' +
+        '<div class="history-stat">✅ %70+: <span>' + (adanaOk + asgOk) + '</span></div>' +
+      '</div>' +
+      '<div class="history-item-btns">' +
+        '<button class="hist-btn hist-btn-view" onclick="loadFromHistory(\'' + h.date.replace(/'/g,"\\'") + '\')">📊 Raporu Ac</button>' +
+        '<button class="hist-btn hist-btn-del" onclick="deleteHistory(\'' + h.date.replace(/'/g,"\\'") + '\')">🗑️ Sil</button>' +
+      '</div>' +
+    '</div>';
+  }
+  html += '</div>';
+  el.innerHTML = html;
+}
+
+/* ── RESET ── */
 function resetApp() {
   document.getElementById('uploadCard').style.display = 'block';
   document.getElementById('uploadCard').style.pointerEvents = 'auto';
@@ -236,8 +328,10 @@ function resetApp() {
   document.getElementById('emptyState').style.display = 'none';
   document.getElementById('fileInput').value = '';
   adanaData = []; asgData = [];
+  document.getElementById('headerDate').textContent = 'Excel yukleyerek raporu olusturun';
 }
 
+/* ── DRAG DROP ── */
 var card = document.getElementById('uploadCard');
 card.addEventListener('dragover', function(e) { e.preventDefault(); card.style.borderColor='#00A651'; });
 card.addEventListener('dragleave', function() { card.style.borderColor='#b2dfb2'; });
@@ -253,6 +347,7 @@ function handleFile(e) {
   if (file) processFile(file);
 }
 
+/* ── PROCESS ── */
 function processFile(file) {
   document.getElementById('uploadCard').style.display = 'none';
   document.getElementById('uploadCard').style.pointerEvents = 'none';
@@ -291,7 +386,6 @@ function processFile(file) {
       var otpSayiKey = findKey('otp ile teslim edilen');
       var telSayiKey = findKey('telefon numarasi ile teslim edilen','telefon numarası ile teslim edilen');
       var topKey     = findKey('toplam teslim');
-
       if (!otpSayiKey) otpSayiKey = findKey('otp ile');
       if (!telSayiKey) telSayiKey = findKey('telefon numar');
 
@@ -299,36 +393,26 @@ function processFile(file) {
         var otpSayi = parseInt(r[otpSayiKey]) || 0;
         var telSayi = parseInt(r[telSayiKey]) || 0;
         var toplam  = parseInt(r[topKey])     || 0;
-        var otpPct      = toplam > 0 ? otpSayi / toplam : 0;
-        var telPct      = toplam > 0 ? telSayi / toplam : 0;
-        var otpTelSayi  = otpSayi + telSayi;
-        var otpTelPct   = toplam > 0 ? otpTelSayi / toplam : 0;
-        return {
-          moy: (r[moyKey] || '').toString().trim(),
-          otpSayi:otpSayi, telSayi:telSayi,
-          otpPct:otpPct, telPct:telPct,
-          otpTelSayi:otpTelSayi, otpTelPct:otpTelPct,
-          toplam:toplam
-        };
+        var otpPct     = toplam > 0 ? otpSayi / toplam : 0;
+        var telPct     = toplam > 0 ? telSayi / toplam : 0;
+        var otpTelSayi = otpSayi + telSayi;
+        var otpTelPct  = toplam > 0 ? otpTelSayi / toplam : 0;
+        return { moy:(r[moyKey]||'').toString().trim(), otpSayi:otpSayi, telSayi:telSayi, otpPct:otpPct, telPct:telPct, otpTelSayi:otpTelSayi, otpTelPct:otpTelPct, toplam:toplam };
       }
 
       var adanaRows = [], asgRows = [];
       for (var i = 0; i < rows.length; i++) {
         var r = rows[i];
-        var moy = (r[moyKey] || '').toString().trim();
-        if (isInList(moy, ASG_LISTESI)) {
-          asgRows.push(parseRow(r));
-        } else if (isInList(moy, ADANA_LISTESI)) {
-          adanaRows.push(parseRow(r));
-        }
+        var moy = (r[moyKey]||'').toString().trim();
+        if (isInList(moy, ASG_LISTESI))        asgRows.push(parseRow(r));
+        else if (isInList(moy, ADANA_LISTESI)) adanaRows.push(parseRow(r));
       }
 
-      adanaData = adanaRows.filter(function(r){ return r.toplam > 0; })
-                           .sort(function(a,b){ return b.otpTelPct - a.otpTelPct; });
-      asgData   = asgRows.filter(function(r){ return r.toplam > 0; })
-                         .sort(function(a,b){ return b.otpTelPct - a.otpTelPct; });
+      adanaData = adanaRows.filter(function(r){ return r.toplam > 0; }).sort(function(a,b){ return b.otpTelPct - a.otpTelPct; });
+      asgData   = asgRows.filter(function(r){ return r.toplam > 0; }).sort(function(a,b){ return b.otpTelPct - a.otpTelPct; });
 
-
+      // Geçmişe kaydet
+      saveToHistory(reportDate, adanaData, asgData);
       renderTables();
     } catch(err) {
       showEmpty('Dosya okunamadi: ' + err.message);
@@ -337,6 +421,7 @@ function processFile(file) {
   reader.readAsArrayBuffer(file);
 }
 
+/* ── RENDER ── */
 function rowColor(p) {
   if (p >= 0.90) return '#1a7a3c';
   if (p >= 0.70) return '#239b56';
@@ -356,10 +441,10 @@ function renderTbody(tbodyId, data) {
     tr.style.background = color;
     tr.innerHTML =
       '<td><span class="rank-badge">' + (i+1) + '</span>' + r.moy + '</td>' +
-      '<td>' + r.otpSayi + '<small>(' + fmt(r.otpPct) + ')</small></td>' +
-      '<td>' + r.telSayi + '<small>(' + fmt(r.telPct) + ')</small></td>' +
-      '<td style="background:rgba(0,0,0,0.2);font-weight:800">' + r.otpTelSayi + '<small>(' + fmt(r.otpTelPct) + ')</small></td>' +
-      '<td>' + fmtN(r.toplam) + '</td>';
+      '<td><strong style="font-size:15px;display:block;font-weight:800">' + fmt(r.otpPct) + '</strong><small style="font-size:10px;opacity:0.75;display:block">' + r.otpSayi + ' parca</small></td>' +
+      '<td><strong style="font-size:15px;display:block;font-weight:800">' + fmt(r.telPct) + '</strong><small style="font-size:10px;opacity:0.75;display:block">' + r.telSayi + ' parca</small></td>' +
+      '<td style="background:rgba(0,0,0,0.15)"><strong style="font-size:16px;font-weight:900;display:block">' + fmt(r.otpTelPct) + '</strong><small style="font-size:10px;opacity:0.75;display:block">' + r.otpTelSayi + ' / ' + r.toplam + '</small></td>' +
+      '<td><strong style="font-size:13px">' + fmtN(r.toplam) + '</strong></td>';
     tbody.appendChild(tr);
   }
 }
@@ -383,6 +468,7 @@ function showEmpty(msg) {
   document.getElementById('uploadCard').style.pointerEvents = 'auto';
 }
 
+/* ── WHATSAPP ── */
 function shareWhatsApp(type) {
   var data = type === 'adana' ? adanaData : asgData;
   var title = type === 'adana' ? 'ADANA MOY RAPORU' : 'ASG MOY RAPORU';
@@ -399,16 +485,15 @@ function shareWhatsApp(type) {
   window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
 }
 
+/* ── GÖRSEL ── */
 function captureSection(type, btnEl) {
   var sectionId = type === 'adana' ? 'adanaSection' : 'asgSection';
   var section = document.getElementById(sectionId);
   var origText = btnEl.textContent;
   btnEl.textContent = 'Hazirlaniyor...';
   btnEl.disabled = true;
-
-  html2canvas(section, {
-    scale:2, backgroundColor:'#f0f4f0', useCORS:true, logging:false, allowTaint:true
-  }).then(function(canvas) {
+  html2canvas(section, { scale:2, backgroundColor:'#f0f4f0', useCORS:true, logging:false, allowTaint:true })
+  .then(function(canvas) {
     canvas.toBlob(function(blob) {
       var fname = 'moy-' + type + '-' + new Date().toLocaleDateString('tr-TR').replace(/\./g,'-') + '.png';
       if (navigator.share && navigator.canShare) {
