@@ -87,11 +87,9 @@ td small { font-size:10px; opacity:0.85; display:block; }
 <div id="results">
   <button class="new-btn" onclick="resetApp()">← Yeni Excel Yukle</button>
   <div class="legend">
-    <div class="legend-item"><div class="legend-dot" style="background:#145a32"></div>%90+ Mukemmel</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#1e8449"></div>%80-90 Iyi</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#27ae60"></div>%70-80 Orta Iyi</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#d68910"></div>%50-70 Orta</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#c0392b"></div>%50 Alti Dusuk</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#1a7a3c"></div>%90-100 Mukemmel</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#82e0aa"></div>%70-89 Iyi</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div>%0-69 Dusuk</div>
   </div>
 
   <div class="section" id="adanaSection">
@@ -340,11 +338,9 @@ function processFile(file) {
 }
 
 function rowColor(p) {
-  if (p >= 0.90) return '#145a32';
-  if (p >= 0.80) return '#1e8449';
-  if (p >= 0.70) return '#27ae60';
-  if (p >= 0.50) return '#d68910';
-  return '#c0392b';
+  if (p >= 0.90) return '#1a7a3c';
+  if (p >= 0.70) return '#82e0aa';
+  return '#e74c3c';
 }
 
 function fmt(val) { return (val * 100).toFixed(2) + '%'; }
@@ -394,7 +390,7 @@ function shareWhatsApp(type) {
   for (var i = 0; i < data.length; i++) {
     var r = data[i];
     var medal = i===0?'🥇':i===1?'🥈':i===2?'🥉':(i+1)+'.';
-    var dot = r.otpTelPct>=0.90?'🟢':r.otpTelPct>=0.80?'🟢':r.otpTelPct>=0.70?'🟡':r.otpTelPct>=0.50?'🟠':'🔴';
+    var dot = r.otpTelPct>=0.90?'🟢':r.otpTelPct>=0.70?'🟡':'🔴';
     msg += medal + ' *' + r.moy + '*\n';
     msg += dot + ' OTP+Tel: ' + r.otpTelSayi + '/' + r.toplam + ' (%' + (r.otpTelPct*100).toFixed(1) + ')\n';
     msg += '📦 OTP: ' + r.otpSayi + ' (%' + (r.otpPct*100).toFixed(1) + ') | 📞 Tel: ' + r.telSayi + ' (%' + (r.telPct*100).toFixed(1) + ')\n\n';
