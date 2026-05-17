@@ -145,41 +145,79 @@ td small { font-size:10px; opacity:0.85; display:block; }
 
 <script>
 var ADANA_LISTESI = [
-  'halil ibrahim demirbaş plasiyer','erdinc ergen plasiyer','mucahit konyar plasiyer',
-  'burak ovec plasiyer','gokhan dalgic plasiyer','ahmet kizilay plasiyer',
-  'murat can oksuz plasiyer','kaan aksoy plasiyer','alper karakas adana',
-  'hulusi copuroglu plasiyer','hamza bahadir ozel plasiyer','omer ayzit plasiyer',
-  'ibrahim turan plasiyer','faruk tayyan plasiyer','murat kat plasiyer',
-  'lokman adigüzel plasiyer','ferit can solmaz plasiyer','ahmet akkilic sendeo',
-  'serdar karaoglan plasiyer','berkay sarieroğlularindan sendeo','ahmet seckin',
-  'mehmet gokce plasiyer','ahmet cosgun plasiyer','mahmut ozay plasiyer',
-  'ercan gedik plasiyer','emir ekiz plasiyer','ozgur kose plasiyer',
-  'can berk sahin plasiyer','ufuk turkmen','erhan karatas sendeo',
-  'nihat yigit plasiyer','yekta bayram plasiyer','emrah akyel sendeo',
-  'burak ozturk sendeo','orhan kagni','duhan yavas plasiyer',
-  'sinan sizucer','furkan altan','umut can koksal',
-  'serkan ibis','derya sedefoglu','yusuf yildiz kalite'
+  'nihat yigit plasiyer',
+  'halil ibrahim demirbaş plasiyer',
+  'erdinc ergen plasiyer',
+  'gokhan dalgic plasiyer',
+  'ibrahim turan plasiyer',
+  'serkan ibis',
+  'ercan gedik plasiyer',
+  'murat kat plasiyer',
+  'ahmet kizilay plasiyer',
+  'sinan sizucer',
+  'yekta bayram plasiyer',
+  'umut can koksal',
+  'ahmet akkilic sendeo',
+  'ahmet cosgun plasiyer',
+  'kaan aksoy plasiyer',
+  'omer ayzit plasiyer',
+  'orhan kagni',
+  'faruk tayyan plasiyer',
+  'can berk sahin plasiyer',
+  'lokman adigüzel plasiyer',
+  'emir ekiz plasiyer',
+  'mucahit konyar plasiyer',
+  'ferit can solmaz plasiyer',
+  'furkan altan',
+  'ozgur kose plasiyer',
+  'emrah akyel sendeo',
+  'burhan durmus sendeo asg',
+  'burak ozturk sendeo',
+  'mehmet gokce plasiyer',
+  'murat can oksuz plasiyer',
+  'serdar karaoglan plasiyer',
+  'erhan karatas sendeo',
+  'hamza bahadir ozel plasiyer',
+  'ahmet seckin',
+  'burak ovec plasiyer',
+  'hulusi copuroglu plasiyer',
+  'mahmut ozay plasiyer',
+  'duhan yavas plasiyer',
+  'berkay sarieroğlularindan sendeo',
+  'alper karakas adana'
 ];
 
 var ASG_LISTESI = [
-  'mustafa gur asg','zeki yilmaz asg','huseyin okuyucu spot',
-  'ozgur caka asg','burak firat sendeo asg','furkan firat asg',
-  'neslihan erin','burhan durmus sendeo asg','hava yolacan asg',
-  'enes furkan gul sendeo asg','furkan gul sendeo','mert gul asg',
-  'ozay aydinli sendeo asg','hilmi dogan asg','erkan durmus asg',
-  'cemal caka asg','omer faruk aygoren asg','lutfi can atik asg',
-  'omer oksuz asg','riza firat asg'
+  'mustafa gur asg',
+  'zeki yilmaz asg',
+  'huseyin okuyucu spot',
+  'ozgur caka asg',
+  'burak firat sendeo asg',
+  'furkan firat asg',
+  'neslihan erin',
+  'burhan durmus sendeo asg',
+  'hava yolacan asg',
+  'enes furkan gul sendeo asg',
+  'mert gul asg',
+  'ozay aydinli sendeo asg',
+  'hilmi dogan asg',
+  'erkan durmus asg',
+  'cemal caka asg',
+  'omer faruk aygoren asg',
+  'lutfi can atik asg',
+  'omer oksuz asg'
 ];
 
 function normalize(str) {
-  return (str || '').toString().toLowerCase()
-    .replace(/i̇/g,'i').replace(/İ/g,'i').replace(/I/g,'i')
-    .replace(/ğ/g,'g').replace(/Ğ/g,'g')
-    .replace(/ü/g,'u').replace(/Ü/g,'u')
-    .replace(/ş/g,'s').replace(/Ş/g,'s')
-    .replace(/ö/g,'o').replace(/Ö/g,'o')
-    .replace(/ç/g,'c').replace(/Ç/g,'c')
+  return (str || '').toString()
+    .replace(/İ/g,'i').replace(/I/g,'i').replace(/ı/g,'i')
+    .replace(/Ğ/g,'g').replace(/ğ/g,'g')
+    .replace(/Ü/g,'u').replace(/ü/g,'u')
+    .replace(/Ş/g,'s').replace(/ş/g,'s')
+    .replace(/Ö/g,'o').replace(/ö/g,'o')
+    .replace(/Ç/g,'c').replace(/ç/g,'c')
     .replace(/â/g,'a').replace(/î/g,'i').replace(/û/g,'u')
+    .toLowerCase()
     .replace(/\s+/g,' ').trim();
 }
 
@@ -291,6 +329,7 @@ function processFile(file) {
                            .sort(function(a,b){ return b.otpTelPct - a.otpTelPct; });
       asgData   = asgRows.filter(function(r){ return r.toplam > 0; })
                          .sort(function(a,b){ return b.otpTelPct - a.otpTelPct; });
+
 
       renderTables();
     } catch(err) {
