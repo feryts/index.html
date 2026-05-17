@@ -10,13 +10,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 * { margin:0; padding:0; box-sizing:border-box; }
 body { font-family:'Inter',sans-serif; background:#f0f4f0; min-height:100vh; padding:16px 12px 40px; }
-
 .header { display:flex; align-items:center; gap:12px; background:#00A651; border-radius:16px; padding:14px 18px; margin-bottom:16px; box-shadow:0 4px 16px rgba(0,166,81,0.3); }
 .header-logo { width:42px; height:42px; background:white; border-radius:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
 .header-logo svg { width:26px; height:26px; }
 .header-text h1 { font-size:16px; font-weight:800; color:white; }
-.header-text p  { font-size:11px; color:rgba(255,255,255,0.8); margin-top:2px; }
-
+.header-text p { font-size:11px; color:rgba(255,255,255,0.8); margin-top:2px; }
 .upload-card { background:white; border-radius:16px; border:2px dashed #b2dfb2; padding:32px 16px; text-align:center; margin-bottom:16px; position:relative; box-shadow:0 2px 12px rgba(0,0,0,0.06); transition:all 0.2s; }
 .upload-card:hover { border-color:#00A651; background:#f0faf5; }
 .upload-card input[type=file] { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%; }
@@ -24,30 +22,24 @@ body { font-family:'Inter',sans-serif; background:#f0f4f0; min-height:100vh; pad
 .upload-title { font-size:15px; font-weight:700; color:#1a1a1a; margin-bottom:6px; }
 .upload-sub { font-size:12px; color:#888; }
 .upload-sub strong { color:#00A651; }
-
 .loading { display:none; text-align:center; padding:32px; background:white; border-radius:16px; margin-bottom:16px; }
 .spinner { width:36px; height:36px; border:3px solid #e0e0e0; border-top-color:#00A651; border-radius:50%; animation:spin 0.8s linear infinite; margin:0 auto 12px; }
 @keyframes spin { to { transform:rotate(360deg); } }
-
 .legend { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
 .legend-item { display:flex; align-items:center; gap:5px; font-size:11px; font-weight:600; color:#444; background:white; padding:5px 10px; border-radius:8px; box-shadow:0 1px 4px rgba(0,0,0,0.06); }
 .legend-dot { width:12px; height:12px; border-radius:3px; }
-
 .new-btn { margin-bottom:14px; background:white; border:1.5px solid #ddd; border-radius:10px; padding:8px 16px; font-family:inherit; font-size:12px; font-weight:600; color:#555; cursor:pointer; }
 .new-btn:hover { border-color:#00A651; color:#00A651; }
-
 .section { margin-bottom:24px; }
 .section-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; flex-wrap:wrap; gap:8px; }
 .section-title { font-size:14px; font-weight:800; color:#1a1a1a; padding:8px 14px; background:white; border-radius:10px; display:inline-flex; align-items:center; gap:6px; box-shadow:0 2px 8px rgba(0,0,0,0.06); border-left:4px solid #00A651; }
 .section-count { font-size:11px; font-weight:700; color:white; background:#00A651; padding:2px 8px; border-radius:20px; }
-
 .btn-group { display:flex; gap:8px; flex-wrap:wrap; }
 .wa-btn { display:inline-flex; align-items:center; gap:6px; background:#25D366; color:white; border:none; border-radius:10px; padding:8px 14px; font-family:inherit; font-size:12px; font-weight:700; cursor:pointer; box-shadow:0 2px 8px rgba(37,211,102,0.3); transition:all 0.2s; }
 .wa-btn.dark { background:#128C7E; }
 .wa-btn:disabled { opacity:0.6; cursor:not-allowed; }
-
 .table-wrap { background:white; border-radius:14px; overflow:hidden; box-shadow:0 2px 12px rgba(0,0,0,0.08); overflow-x:auto; }
-table { width:100%; border-collapse:collapse; min-width:500px; }
+table { width:100%; border-collapse:collapse; min-width:360px; }
 thead tr { background:#003d20; }
 th { padding:10px 12px; font-size:11px; font-weight:700; color:white; text-align:center; white-space:nowrap; }
 th:first-child { text-align:left; min-width:160px; }
@@ -56,21 +48,9 @@ td:first-child { text-align:left; font-weight:700; }
 tr:last-child td { border-bottom:none; }
 td small { font-size:10px; opacity:0.85; display:block; }
 .rank-badge { display:inline-block; width:20px; height:20px; background:rgba(255,255,255,0.25); border-radius:5px; font-size:10px; font-weight:800; line-height:20px; text-align:center; margin-right:5px; }
-
 #results { display:none; }
 #emptyState { display:none; text-align:center; padding:32px; background:white; border-radius:16px; margin-bottom:16px; }
 #emptyState p { font-size:14px; color:#888; margin-top:8px; }
-
-/* Kaydet modalı */
-.save-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:1000; align-items:center; justify-content:center; padding:20px; }
-.save-modal.show { display:flex; }
-.save-modal-inner { background:white; border-radius:20px; padding:20px; width:100%; max-width:400px; text-align:center; }
-.save-modal-inner img { width:100%; border-radius:10px; margin-bottom:14px; }
-.save-modal-inner p { font-size:13px; color:#555; margin-bottom:16px; font-weight:500; }
-.save-modal-btns { display:flex; gap:10px; }
-.save-modal-btns button { flex:1; padding:12px; border-radius:12px; border:none; font-family:inherit; font-weight:700; font-size:13px; cursor:pointer; }
-.btn-save { background:#00A651; color:white; }
-.btn-close { background:#f0f0f0; color:#555; }
 </style>
 </head>
 <body>
@@ -106,12 +86,12 @@ td small { font-size:10px; opacity:0.85; display:block; }
 
 <div id="results">
   <button class="new-btn" onclick="resetApp()">← Yeni Excel Yukle</button>
-
   <div class="legend">
-    <div class="legend-item"><div class="legend-dot" style="background:#1a7a3c"></div>%90+ Mukemmel</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#27ae60"></div>%75-90 Iyi</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#e67e22"></div>%60-75 Orta</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#c0392b"></div>%60 Alti Dusuk</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#145a32"></div>%90+ Mukemmel</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#1e8449"></div>%80-90 Iyi</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#27ae60"></div>%70-80 Orta Iyi</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#d68910"></div>%50-70 Orta</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#c0392b"></div>%50 Alti Dusuk</div>
   </div>
 
   <div class="section" id="adanaSection">
@@ -119,7 +99,7 @@ td small { font-size:10px; opacity:0.85; display:block; }
       <div class="section-title">🏙️ ADANA <span class="section-count" id="adanaCount">0</span></div>
       <div class="btn-group">
         <button class="wa-btn" onclick="shareWhatsApp('adana')">📋 Metin</button>
-        <button class="wa-btn dark" id="adanaImgBtn" onclick="captureSection('adana', this)">📸 Gorsel</button>
+        <button class="wa-btn dark" onclick="captureSection('adana', this)">📸 Gorsel</button>
       </div>
     </div>
     <div class="table-wrap">
@@ -129,9 +109,7 @@ td small { font-size:10px; opacity:0.85; display:block; }
             <th>MOY</th>
             <th>OTP'li</th>
             <th>Telefon</th>
-            <th style="background:rgba(255,255,255,0.12)">OTP+Tel</th>
-            <th>Temassiz</th>
-            <th style="background:rgba(255,255,255,0.2)">Toplam</th>
+            <th style="background:rgba(255,255,255,0.2)">OTP+Tel Toplam</th>
             <th>Parca</th>
           </tr>
         </thead>
@@ -145,7 +123,7 @@ td small { font-size:10px; opacity:0.85; display:block; }
       <div class="section-title">⭐ ASG <span class="section-count" id="asgCount">0</span></div>
       <div class="btn-group">
         <button class="wa-btn" onclick="shareWhatsApp('asg')">📋 Metin</button>
-        <button class="wa-btn dark" id="asgImgBtn" onclick="captureSection('asg', this)">📸 Gorsel</button>
+        <button class="wa-btn dark" onclick="captureSection('asg', this)">📸 Gorsel</button>
       </div>
     </div>
     <div class="table-wrap">
@@ -155,9 +133,7 @@ td small { font-size:10px; opacity:0.85; display:block; }
             <th>MOY</th>
             <th>OTP'li</th>
             <th>Telefon</th>
-            <th style="background:rgba(255,255,255,0.12)">OTP+Tel</th>
-            <th>Temassiz</th>
-            <th style="background:rgba(255,255,255,0.2)">Toplam</th>
+            <th style="background:rgba(255,255,255,0.2)">OTP+Tel Toplam</th>
             <th>Parca</th>
           </tr>
         </thead>
@@ -167,89 +143,42 @@ td small { font-size:10px; opacity:0.85; display:block; }
   </div>
 </div>
 
-<!-- Resim Kaydet Modal -->
-<div class="save-modal" id="saveModal">
-  <div class="save-modal-inner">
-    <img id="modalImg" src="" alt="rapor" />
-    <p>Resmi galeriye kaydetmek icin asagidaki butona uzun basin veya kaydet butonunu kullanin</p>
-    <div class="save-modal-btns">
-      <button class="btn-save" onclick="downloadImage()">💾 Galeriye Kaydet</button>
-      <button class="btn-close" onclick="closeModal()">Kapat</button>
-    </div>
-  </div>
-</div>
-
 <script>
-// ── SABİT İSİM LİSTELERİ ──
 var ADANA_LISTESI = [
-  'nihat yigit plasiyer',
-  'halil ibrahim demirbaş plasiyer',
-  'erdinc ergen plasiyer',
-  'gokhan dalgic plasiyer',
-  'ibrahim turan plasiyer',
-  'serkan ibis',
-  'ercan gedik plasiyer',
-  'murat kat plasiyer',
-  'ahmet kizilay plasiyer',
-  'sinan sizucer',
-  'yekta bayram plasiyer',
-  'umut can koksal',
-  'ahmet akkilic sendeo',
-  'ahmet cosgun plasiyer',
-  'kaan aksoy plasiyer',
-  'omer ayzit plasiyer',
-  'orhan kagni',
-  'faruk tayyan plasiyer',
-  'can berk sahin plasiyer',
-  'lokman adigüzel plasiyer',
-  'emir ekiz plasiyer',
-  'mucahit konyar plasiyer',
-  'ferit can solmaz plasiyer',
-  'furkan altan',
-  'ozgur kose plasiyer',
-  'emrah akyel sendeo',
-  'burhan durmus sendeo asg',
-  'burak ozturk sendeo',
-  'mehmet gokce plasiyer',
-  'murat can oksuz plasiyer',
-  'serdar karaoglan plasiyer',
-  'erhan karatas sendeo',
-  'hamza bahadir ozel plasiyer',
-  'ahmet seckin',
-  'burak ovec plasiyer',
-  'hulusi copuroglu plasiyer',
-  'mahmut ozay plasiyer',
-  'duhan yavas plasiyer',
-  'berkay sarieroğlularindan sendeo',
-  'alper karakas adana'
+  'halil ibrahim demirbaş plasiyer','erdinc ergen plasiyer','mucahit konyar plasiyer',
+  'burak ovec plasiyer','gokhan dalgic plasiyer','ahmet kizilay plasiyer',
+  'murat can oksuz plasiyer','kaan aksoy plasiyer','alper karakas adana',
+  'hulusi copuroglu plasiyer','hamza bahadir ozel plasiyer','omer ayzit plasiyer',
+  'ibrahim turan plasiyer','faruk tayyan plasiyer','murat kat plasiyer',
+  'lokman adigüzel plasiyer','ferit can solmaz plasiyer','ahmet akkilic sendeo',
+  'serdar karaoglan plasiyer','berkay sarieroğlularindan sendeo','ahmet seckin',
+  'mehmet gokce plasiyer','ahmet cosgun plasiyer','mahmut ozay plasiyer',
+  'ercan gedik plasiyer','emir ekiz plasiyer','ozgur kose plasiyer',
+  'can berk sahin plasiyer','ufuk turkmen','erhan karatas sendeo',
+  'nihat yigit plasiyer','yekta bayram plasiyer','emrah akyel sendeo',
+  'burak ozturk sendeo','orhan kagni','duhan yavas plasiyer',
+  'sinan sizucer','furkan altan','umut can koksal',
+  'serkan ibis','derya sedefoglu','yusuf yildiz kalite'
 ];
 
 var ASG_LISTESI = [
-  'mustafa gur asg',
-  'zeki yilmaz asg',
-  'huseyin okuyucu spot',
-  'ozgur caka asg',
-  'burak firat sendeo asg',
-  'furkan firat asg',
-  'neslihan erin',
-  'burhan durmus sendeo asg',
-  'hava yolacan asg',
-  'enes furkan gul sendeo asg',
-  'mert gul asg',
-  'ozay aydinli sendeo asg',
-  'hilmi dogan asg',
-  'erkan durmus asg',
-  'cemal caka asg',
-  'omer faruk aygoren asg',
-  'lutfi can atik asg',
-  'omer oksuz asg'
+  'mustafa gur asg','zeki yilmaz asg','huseyin okuyucu spot',
+  'ozgur caka asg','burak firat sendeo asg','furkan firat asg',
+  'neslihan erin','burhan durmus sendeo asg','hava yolacan asg',
+  'enes furkan gul sendeo asg','furkan gul sendeo','mert gul asg',
+  'ozay aydinli sendeo asg','hilmi dogan asg','erkan durmus asg',
+  'cemal caka asg','omer faruk aygoren asg','lutfi can atik asg',
+  'omer oksuz asg','riza firat asg'
 ];
 
 function normalize(str) {
   return (str || '').toString().toLowerCase()
-    .replace(/İ/g,'i').replace(/I/g,'i').replace(/Ğ/g,'g').replace(/ğ/g,'g')
-    .replace(/Ü/g,'u').replace(/ü/g,'u').replace(/Ş/g,'s').replace(/ş/g,'s')
-    .replace(/Ö/g,'o').replace(/ö/g,'o').replace(/Ç/g,'c').replace(/ç/g,'c')
+    .replace(/i̇/g,'i').replace(/İ/g,'i').replace(/I/g,'i')
+    .replace(/ğ/g,'g').replace(/Ğ/g,'g')
+    .replace(/ü/g,'u').replace(/Ü/g,'u')
+    .replace(/ş/g,'s').replace(/Ş/g,'s')
+    .replace(/ö/g,'o').replace(/Ö/g,'o')
+    .replace(/ç/g,'c').replace(/Ç/g,'c')
     .replace(/â/g,'a').replace(/î/g,'i').replace(/û/g,'u')
     .replace(/\s+/g,' ').trim();
 }
@@ -257,15 +186,12 @@ function normalize(str) {
 function isInList(name, list) {
   var n = normalize(name);
   for (var i = 0; i < list.length; i++) {
-    if (n === list[i] || n.indexOf(list[i]) !== -1 || list[i].indexOf(n) !== -1) return true;
+    if (n === list[i]) return true;
   }
   return false;
 }
 
-var adanaData = [];
-var asgData = [];
-var reportDate = '';
-var currentBlob = null;
+var adanaData = [], asgData = [], reportDate = '';
 
 function resetApp() {
   document.getElementById('uploadCard').style.display = 'block';
@@ -273,23 +199,20 @@ function resetApp() {
   document.getElementById('results').style.display = 'none';
   document.getElementById('emptyState').style.display = 'none';
   document.getElementById('fileInput').value = '';
-  adanaData = [];
-  asgData = [];
+  adanaData = []; asgData = [];
 }
 
 var card = document.getElementById('uploadCard');
 card.addEventListener('dragover', function(e) { e.preventDefault(); card.style.borderColor='#00A651'; });
 card.addEventListener('dragleave', function() { card.style.borderColor='#b2dfb2'; });
 card.addEventListener('drop', function(e) {
-  e.preventDefault();
-  card.style.borderColor = '#b2dfb2';
+  e.preventDefault(); card.style.borderColor='#b2dfb2';
   var file = e.dataTransfer.files[0];
   if (file) processFile(file);
 });
 
 function handleFile(e) {
-  e.preventDefault();
-  e.stopPropagation();
+  e.preventDefault(); e.stopPropagation();
   var file = e.target.files[0];
   if (file) processFile(file);
 }
@@ -305,17 +228,15 @@ function processFile(file) {
   var reader = new FileReader();
   reader.onload = function(ev) {
     try {
-      var wb = XLSX.read(ev.target.result, { type: 'array' });
+      var wb = XLSX.read(ev.target.result, { type:'array' });
       var sheetName = null;
       for (var i = 0; i < wb.SheetNames.length; i++) {
-        if (wb.SheetNames[i].toLowerCase().indexOf('moy') !== -1) {
-          sheetName = wb.SheetNames[i]; break;
-        }
+        if (wb.SheetNames[i].toLowerCase().indexOf('moy') !== -1) { sheetName = wb.SheetNames[i]; break; }
       }
       if (!sheetName) { showEmpty('MOY Bazli sayfasi bulunamadi.'); return; }
 
       var ws = wb.Sheets[sheetName];
-      var rows = XLSX.utils.sheet_to_json(ws, { defval: 0 });
+      var rows = XLSX.utils.sheet_to_json(ws, { defval:0 });
       if (!rows.length) { showEmpty('Veri bulunamadi.'); return; }
 
       var keys = Object.keys(rows[0]);
@@ -333,37 +254,29 @@ function processFile(file) {
       var moyKey     = findKey('moy');
       var otpSayiKey = findKey('otp ile teslim edilen');
       var telSayiKey = findKey('telefon numarasi ile teslim edilen','telefon numarası ile teslim edilen');
-      var temSayiKey = findKey('temassiz teslim edilen','temassız teslim edilen');
       var topKey     = findKey('toplam teslim');
 
       if (!otpSayiKey) otpSayiKey = findKey('otp ile');
       if (!telSayiKey) telSayiKey = findKey('telefon numar');
-      if (!temSayiKey) temSayiKey = findKey('temassiz teslim','temassız teslim');
 
       function parseRow(r) {
         var otpSayi = parseInt(r[otpSayiKey]) || 0;
         var telSayi = parseInt(r[telSayiKey]) || 0;
-        var temSayi = parseInt(r[temSayiKey]) || 0;
         var toplam  = parseInt(r[topKey])     || 0;
-        var otpPct  = toplam > 0 ? otpSayi / toplam : 0;
-        var telPct  = toplam > 0 ? telSayi / toplam : 0;
-        var temPct  = toplam > 0 ? temSayi / toplam : 0;
-        var otpTelSayi     = otpSayi + telSayi;
-        var otpTelPct      = toplam > 0 ? otpTelSayi / toplam : 0;
-        var toplamBasarili = otpSayi + telSayi + temSayi;
-        var toplamPct      = toplam > 0 ? toplamBasarili / toplam : 0;
+        var otpPct      = toplam > 0 ? otpSayi / toplam : 0;
+        var telPct      = toplam > 0 ? telSayi / toplam : 0;
+        var otpTelSayi  = otpSayi + telSayi;
+        var otpTelPct   = toplam > 0 ? otpTelSayi / toplam : 0;
         return {
           moy: (r[moyKey] || '').toString().trim(),
-          otpSayi:otpSayi, telSayi:telSayi, temSayi:temSayi,
-          otpPct:otpPct, telPct:telPct, temPct:temPct,
+          otpSayi:otpSayi, telSayi:telSayi,
+          otpPct:otpPct, telPct:telPct,
           otpTelSayi:otpTelSayi, otpTelPct:otpTelPct,
-          toplamBasarili:toplamBasarili, toplamPct:toplamPct, toplam:toplam
+          toplam:toplam
         };
       }
 
-      var adanaRows = [];
-      var asgRows = [];
-
+      var adanaRows = [], asgRows = [];
       for (var i = 0; i < rows.length; i++) {
         var r = rows[i];
         var moy = (r[moyKey] || '').toString().trim();
@@ -374,8 +287,10 @@ function processFile(file) {
         }
       }
 
-      adanaData = adanaRows.sort(function(a,b) { return b.toplamPct - a.toplamPct; });
-      asgData   = asgRows.sort(function(a,b) { return b.toplamPct - a.toplamPct; });
+      adanaData = adanaRows.filter(function(r){ return r.toplam > 0; })
+                           .sort(function(a,b){ return b.otpTelPct - a.otpTelPct; });
+      asgData   = asgRows.filter(function(r){ return r.toplam > 0; })
+                         .sort(function(a,b){ return b.otpTelPct - a.otpTelPct; });
 
       renderTables();
     } catch(err) {
@@ -386,9 +301,10 @@ function processFile(file) {
 }
 
 function rowColor(p) {
-  if (p >= 0.90) return '#1a7a3c';
-  if (p >= 0.75) return '#27ae60';
-  if (p >= 0.60) return '#e67e22';
+  if (p >= 0.90) return '#145a32';
+  if (p >= 0.80) return '#1e8449';
+  if (p >= 0.70) return '#27ae60';
+  if (p >= 0.50) return '#d68910';
   return '#c0392b';
 }
 
@@ -400,16 +316,14 @@ function renderTbody(tbodyId, data) {
   tbody.innerHTML = '';
   for (var i = 0; i < data.length; i++) {
     var r = data[i];
-    var color = rowColor(r.toplamPct);
+    var color = rowColor(r.otpTelPct);
     var tr = document.createElement('tr');
     tr.style.background = color;
     tr.innerHTML =
       '<td><span class="rank-badge">' + (i+1) + '</span>' + r.moy + '</td>' +
       '<td>' + r.otpSayi + '<small>(' + fmt(r.otpPct) + ')</small></td>' +
       '<td>' + r.telSayi + '<small>(' + fmt(r.telPct) + ')</small></td>' +
-      '<td style="background:rgba(0,0,0,0.12);font-weight:700">' + r.otpTelSayi + '<small>(' + fmt(r.otpTelPct) + ')</small></td>' +
-      '<td>' + r.temSayi + '<small>(' + fmt(r.temPct) + ')</small></td>' +
-      '<td style="background:rgba(0,0,0,0.2);font-weight:800">' + r.toplamBasarili + '<small>(' + fmt(r.toplamPct) + ')</small></td>' +
+      '<td style="background:rgba(0,0,0,0.2);font-weight:800">' + r.otpTelSayi + '<small>(' + fmt(r.otpTelPct) + ')</small></td>' +
       '<td>' + fmtN(r.toplam) + '</td>';
     tbody.appendChild(tr);
   }
@@ -434,7 +348,6 @@ function showEmpty(msg) {
   document.getElementById('uploadCard').style.pointerEvents = 'auto';
 }
 
-// ── WHATSAPP METİN ──
 function shareWhatsApp(type) {
   var data = type === 'adana' ? adanaData : asgData;
   var title = type === 'adana' ? 'ADANA MOY RAPORU' : 'ASG MOY RAPORU';
@@ -442,17 +355,15 @@ function shareWhatsApp(type) {
   for (var i = 0; i < data.length; i++) {
     var r = data[i];
     var medal = i===0?'🥇':i===1?'🥈':i===2?'🥉':(i+1)+'.';
-    var dot = r.toplamPct>=0.90?'🟢':r.toplamPct>=0.75?'🟡':r.toplamPct>=0.60?'🟠':'🔴';
+    var dot = r.otpTelPct>=0.90?'🟢':r.otpTelPct>=0.80?'🟢':r.otpTelPct>=0.70?'🟡':r.otpTelPct>=0.50?'🟠':'🔴';
     msg += medal + ' *' + r.moy + '*\n';
-    msg += dot + ' Toplam: ' + r.toplamBasarili + '/' + r.toplam + ' (%' + (r.toplamPct*100).toFixed(1) + ')\n';
-    msg += '📦 OTP: ' + r.otpSayi + ' (%' + (r.otpPct*100).toFixed(1) + ') | 📞 Tel: ' + r.telSayi + ' (%' + (r.telPct*100).toFixed(1) + ')\n';
-    msg += '🤝 Temassiz: ' + r.temSayi + ' (%' + (r.temPct*100).toFixed(1) + ')\n\n';
+    msg += dot + ' OTP+Tel: ' + r.otpTelSayi + '/' + r.toplam + ' (%' + (r.otpTelPct*100).toFixed(1) + ')\n';
+    msg += '📦 OTP: ' + r.otpSayi + ' (%' + (r.otpPct*100).toFixed(1) + ') | 📞 Tel: ' + r.telSayi + ' (%' + (r.telPct*100).toFixed(1) + ')\n\n';
   }
   msg += '_Kolay Gelsin MOY Raporu_';
   window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
 }
 
-// ── GÖRSEL KAYDET ──
 function captureSection(type, btnEl) {
   var sectionId = type === 'adana' ? 'adanaSection' : 'asgSection';
   var section = document.getElementById(sectionId);
@@ -461,54 +372,30 @@ function captureSection(type, btnEl) {
   btnEl.disabled = true;
 
   html2canvas(section, {
-    scale: 2,
-    backgroundColor: '#f0f4f0',
-    useCORS: true,
-    logging: false,
-    allowTaint: true
+    scale:2, backgroundColor:'#f0f4f0', useCORS:true, logging:false, allowTaint:true
   }).then(function(canvas) {
     canvas.toBlob(function(blob) {
-      currentBlob = blob;
+      var fname = 'moy-' + type + '-' + new Date().toLocaleDateString('tr-TR').replace(/\./g,'-') + '.png';
+      if (navigator.share && navigator.canShare) {
+        var file = new File([blob], fname, { type:'image/png' });
+        if (navigator.canShare({ files:[file] })) {
+          navigator.share({ files:[file], title:'MOY Raporu' }).catch(function(){});
+          btnEl.textContent = origText; btnEl.disabled = false;
+          return;
+        }
+      }
       var url = URL.createObjectURL(blob);
-      var img = document.getElementById('modalImg');
-      img.src = url;
-      document.getElementById('saveModal').classList.add('show');
-      btnEl.textContent = origText;
-      btnEl.disabled = false;
+      var a = document.createElement('a');
+      a.href = url; a.download = fname;
+      document.body.appendChild(a); a.click();
+      document.body.removeChild(a);
+      setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+      btnEl.textContent = origText; btnEl.disabled = false;
     }, 'image/png');
   }).catch(function(err) {
     alert('Gorsel alinamadi: ' + err.message);
-    btnEl.textContent = origText;
-    btnEl.disabled = false;
+    btnEl.textContent = origText; btnEl.disabled = false;
   });
-}
-
-function downloadImage() {
-  if (!currentBlob) return;
-  var url = URL.createObjectURL(currentBlob);
-  var a = document.createElement('a');
-  a.href = url;
-  a.download = 'moy-raporu-' + new Date().toLocaleDateString('tr-TR').replace(/\./g,'-') + '.png';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
-
-  // Mobilse ayrıca share API dene
-  if (navigator.share && navigator.canShare) {
-    var file = new File([currentBlob], 'moy-raporu.png', { type: 'image/png' });
-    if (navigator.canShare({ files: [file] })) {
-      navigator.share({ files: [file], title: 'MOY Raporu' });
-    }
-  }
-}
-
-function closeModal() {
-  document.getElementById('saveModal').classList.remove('show');
-  currentBlob = null;
-  var img = document.getElementById('modalImg');
-  URL.revokeObjectURL(img.src);
-  img.src = '';
 }
 </script>
 </body>
